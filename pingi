@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Requires: awk, bc, grep, sed, ping and bash of course ;)
+
+function statistic() {
+	if [ $FAIL -ne 0 ]; then
+		#LOSS=$((100/$COUNT * $FAIL)) # no floates possible
+		LOSS=$(echo 100/$COUNT*$FAIL | bc -l | awk '{printf "%.0f", $0}') # awk for printing 0.25 instead of .25; 
+	else
+		LOSS=0
+	fi
+	echo
+	echo
+	echo "--- $HOST ping statistics ---"
+	echo "$COUNT packets transmitted, $SUCCESS received, $LOSS% packet loss"
+	echo
+	exit
+}
+
+HOST="$@"
+COUNT=0
+SUCCESS=0
+FAIL=0
+
+trap statistic EXIT	# SIGINT AND SIGTERM
+
+while [ 1 ]; do
+	((COUNT++))
+	PING=$(ping -s 56 -c 1 -W 1 "$HOST" | grep ^64 | sed "s/icmp_seq=1/icmp_seq=$COUNT/g") # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=609853
+	if [ "$PING" ]; then
+		((SUCCESS++))
+		echo "$PING"
+	else
+		((FAIL++))
+		echo "Request timed out." >&2
+	fi
+	sleep 1
+done
