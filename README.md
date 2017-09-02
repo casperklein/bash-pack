@@ -5,3 +5,7 @@
 
 ## Install packages
     /scripts/install.sh
+
+## Symlink .bashrc
+    mv -i ~/.bashrc ~/.bashrc.original
+    ln -s /scripts/bashrc ~/.bashrc
