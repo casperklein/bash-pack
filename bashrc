@@ -77,6 +77,7 @@ alias visudo='VISUAL=vi visudo'
 alias wget='wget -U "$ua" --no-check-certificate'
 alias curl='curl -A "$ua"'
 alias lynx='lynx -useragent "$ua"'
+
 # Lower process priority
 alias low='nice -n 20 ionice -c3'
 alias md5sum='low md5sum'
