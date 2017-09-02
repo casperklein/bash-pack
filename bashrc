@@ -26,7 +26,8 @@ alias diff='colordiff'
 alias configure='./configure | ccze -A'
 alias make='low colormake'
 alias checkinstall='checkinstall colormake install'
-export GREP_OPTIONS='--color=auto'
+#export GREP_OPTIONS='--color=auto' #deprecated
+alias grep='grep --color=auto'
 alias highlight='ccze -CA'
 
 # Some shortcuts
