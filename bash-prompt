@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Prompt
+if [ ! -z "$PS1" ] ;then # prevent WinSCP issues
+	if [ $(tput colors) -gt 0 ] ; then
+		RED=$(tput setaf 1)
+		GREEN=$(tput setaf 2)
+		CYAN=$(tput setaf 6)
+		RST=$(tput sgr0)
+	fi
+	bash_prompt_command() {
+		RTN=$?
+		# OK
+		if [ $RTN == 0 ]; then
+			RES=$GREEN
+
+		# EXCEPTIONS
+		elif [ $RTN == 130 ]; then # CTRL+C
+			RES=$GREEN
+		elif [ $RTN == 147 ]; then # BREAK (ls command)
+			RES=$GREEN
+		elif [ $RTN == 148 ]; then # BREAK (vim)
+			RES=$GREEN
+#		elif [ $RTN == 127 ]; then # 'command not found'
+#			RES=$GREEN
+		
+		# ERROR
+		else
+			RES=$RED
+		fi
+		history -a
+	}
+	PROMPT_COMMAND=bash_prompt_command
+	#PS1='\[\e[0;36m\]\h\[\e[0;32m\]:\w\[$RES\]\$\[\e[0m\] '
+	PS1='\[$RST\]\[$CYAN\]\h\[$GREEN\]:\w\[$RES\]\$\[$RST\] '
+fi
