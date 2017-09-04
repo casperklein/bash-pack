@@ -75,7 +75,7 @@ alias tailf='tail -F'
 alias tmux='tmux a'
 alias top='htop'
 alias visudo='VISUAL=vi visudo'
-alias wget='wget -U "$ua" --no-check-certificate'
+alias wget='wget -U "$ua"'
 alias curl='curl -A "$ua"'
 alias lynx='lynx -useragent "$ua"'
 
