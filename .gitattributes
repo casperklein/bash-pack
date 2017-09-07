@@ -1,1 +1,2 @@
+# ignore croncal.pl when setting repo language
 croncal.pl linguist-vendored
