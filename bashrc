@@ -147,3 +147,5 @@ delay() {
 		sleep 30
 	done
 }
+
+[ -f ~/.bashrc.local ] && source ~/.bashrc.local
