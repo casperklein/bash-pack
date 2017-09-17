@@ -8,7 +8,7 @@ if [ $# -ne 1 ]; then
 	exit 1
 fi
 
-if [[ -f "$1" ]]; then
+if [ -f "$1" ]; then
 	case "$1" in
 		(*.tar.bz2) bzip2 -v -d "$1" ;;
 		(*.tar.gz) tar -xvzf "$1" ;;
@@ -28,5 +28,5 @@ if [[ -f "$1" ]]; then
 		(*) echo "Unknown compression type: $1" >&2;;
 	esac
 else
-	echo "Error: File '"$1"' not a found."
+	echo "Error: File '$1' not a found."
 fi
