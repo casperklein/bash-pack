@@ -7,5 +7,7 @@
     /scripts/install.sh
 
 ## Symlink .bashrc
+    echo return > ~/.bashrc.local
+    cat ~/.bashrc >> ~/.bashrc.local
     mv -i ~/.bashrc ~/.bashrc.original
     ln -s /scripts/bashrc ~/.bashrc
