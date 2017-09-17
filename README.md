@@ -5,3 +5,6 @@
 
 ## Install packages and setup ~/.bashrc
     /scripts/install.sh
+
+## Update
+    /scripts/update.sh
