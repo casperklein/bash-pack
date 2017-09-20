@@ -14,4 +14,11 @@ else
 	echo 'Error: /etc/vim/vimrc.local not found.' >&2
 fi
 
+if [ "$(readlink -f ~/.inputrc)" == "/scripts/inputrc" ]; then
+	echo 'Removing symlink' ~/.inputrc '-> /scripts/inputrc'
+	rm ~/.inputrc
+else
+	echo 'Error: /etc/vim/vimrc.local not found.' >&2
+fi
+
 [ -f ~/.bashrc.local ] && echo && rm -i ~/.bashrc.local
