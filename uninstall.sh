@@ -11,7 +11,7 @@ if [ "$(readlink -f /etc/vim/vimrc.local)" == "/scripts/vimrc.local" ]; then
 	echo 'Removing symlink /etc/vim/vimrc.local -> /scripts/vimrc.local'
 	rm /etc/vim/vimrc.local
 else
-	echo 'Error: /etc/vim/vimrc.local not found' >&2
+	echo 'Error: /etc/vim/vimrc.local not found.' >&2
 fi
 
 [ -f ~/.bashrc.local ] && echo && rm -i ~/.bashrc.local
