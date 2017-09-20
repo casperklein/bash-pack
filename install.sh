@@ -5,13 +5,13 @@ apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormak
 echo
 
 if [ ! -f ~/.bashrc.local ]; then
-	echo 'Creating        ' ~/.bashrc.local
+	echo 'Creating         ' ~/.bashrc.local
 	echo 'return' > ~/.bashrc.local
 	cat ~/.bashrc >> ~/.bashrc.local
 fi
 
 if [ ! -f ~/.bashrc.backup ]; then
-	echo 'Moving          ' ~/.bashrc '->' ~/.bashrc.backup
+	echo 'Moving           ' ~/.bashrc '->' ~/.bashrc.backup
 	mv ~/.bashrc ~/.bashrc.backup
 	echo -n 'Creating symlink '
 	ln -sv /scripts/bashrc ~/.bashrc
