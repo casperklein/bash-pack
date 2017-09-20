@@ -2,6 +2,7 @@
 
 apt-get update &&
 apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormake curl dcfldd git htop lynx most openssl procps pv tcpflow vim
+echo
 
 if [ ! -f ~/.bashrc.local ]; then
 	echo 'Creating' ~/.bashrc.local
