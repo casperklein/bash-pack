@@ -17,9 +17,13 @@ if [ ! -f ~/.bashrc.backup ]; then
 	ln -sv /scripts/bashrc ~/.bashrc
 fi
 
+echo
+
 if [ ! -f ~/.inputrc ]; then
 	echo -n 'Creating symlink '
 	ln -sv /scripts/inputrc ~/.inputrc
+fi
+
 echo
 
 if [ ! -f /etc/vim/vimrc.local ]; then
