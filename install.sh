@@ -11,7 +11,7 @@ if [ ! -f ~/.bashrc.local ]; then
 fi
 
 if [ ! -f ~/.bashrc.backup ]; then
-	echo 'Moving  ' \'~/.bashrc\' '->' \'~/.bashrc.backup\'
+	echo 'Moving  ' ~/.bashrc '->' \'~/.bashrc.backup\'
 	mv ~/.bashrc ~/.bashrc.backup
 	echo -n 'Creating symlink '
 	ln -sv /scripts/bashrc ~/.bashrc
