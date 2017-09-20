@@ -18,3 +18,4 @@ fi
 if [ ! -f /etc/vim/vimrc.local ]; then
 	echo -n 'Creating symlink '
 	ln -sv /scripts/vimrc.local /etc/vim/vimrc.local
+fi
