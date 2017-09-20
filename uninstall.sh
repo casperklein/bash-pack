@@ -14,4 +14,4 @@ else
 	echo 'Error: /etc/vim/vimrc.local not found' >&2
 fi
 
-[ -f ~/.bashrc.local ] && rm -i ~/.bashrc.local
+[ -f ~/.bashrc.local ] && echo && rm -i ~/.bashrc.local
