@@ -10,9 +10,12 @@ if [ ! -f ~/.bashrc.local ]; then
 	cat ~/.bashrc >> ~/.bashrc.local
 fi
 
-if [ ! -f ~/.bashrc.backup ]; then
+if [ ! -f ~/.bashrc.backup ] && [ -f ~/.bashrc ]; then
 	echo 'Moving           ' ~/.bashrc '->' ~/.bashrc.backup
 	mv ~/.bashrc ~/.bashrc.backup
+fi
+
+if [ ! -f ~/.bashrc ]; then
 	echo -n 'Creating symlink '
 	ln -sv /scripts/bashrc ~/.bashrc
 fi
