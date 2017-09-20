@@ -10,4 +10,4 @@ if [ "$(readlink -f /etc/vim/vimrc.local)" == "/scripts/vimrc.local" ]; then
 	rm /etc/vim/vimrc.local
 fi
 
-rm -i ~/.bashrc.local
+[ -f ~/.bashrc.local ] && rm -i ~/.bashrc.local
