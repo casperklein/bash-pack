@@ -5,6 +5,7 @@ if [ "$(readlink -f ~/.bashrc)" == "/scripts/bashrc" ] && [ -f ~/.bashrc.backup 
 	mv ~/.bashrc.backup ~/.bashrc
 else
 	echo 'Error:' ~/.bashrc 'symlink or' ~/.bashrc.backup 'not found.' >&2
+	echo 'Error: NOT removing' ~/.bashrc >&1
 fi
 
 if [ "$(readlink -f /etc/vim/vimrc.local)" == "/scripts/vimrc.local" ]; then
