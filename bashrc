@@ -1,7 +1,10 @@
 umask 022
 
 # Path stuff
-export PATH=$PATH:/scripts
+DIR=$(dirname "$(readlink -f "$0")")
+export PATH=$PATH:"$DIR"
+echo $PATH
+return
 syslog=/var/log/syslog
 
 # Useful vars
