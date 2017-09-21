@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DIR=$(dirname "$(readlink -f "$0")")
+
 apt-get update &&
 apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormake curl dcfldd git htop lynx most openssl procps pv tcpflow vim wget
 echo
@@ -17,19 +19,19 @@ fi
 
 if [ ! -f ~/.bashrc ]; then
 	echo -n 'Creating symlink '
-	ln -sv /scripts/bashrc ~/.bashrc
+	ln -sv "$DIR"/bashrc ~/.bashrc
 fi
 
 echo
 
 if [ ! -f ~/.inputrc ]; then
 	echo -n 'Creating symlink '
-	ln -sv /scripts/inputrc ~/.inputrc
+	ln -sv "$DIR"/inputrc ~/.inputrc
 fi
 
 echo
 
 if [ ! -f /etc/vim/vimrc.local ]; then
 	echo -n 'Creating symlink '
-	ln -sv /scripts/vimrc.local /etc/vim/vimrc.local
+	ln -sv "$DIR"/vimrc.local /etc/vim/vimrc.local
 fi
