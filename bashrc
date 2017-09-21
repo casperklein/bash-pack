@@ -2,6 +2,7 @@ umask 022
 
 # Path stuff
 DIR=$(dirname "$(readlink -f "$0")")
+echo dirname "$(readlink -f "$0")"
 export PATH=$PATH:"$DIR"
 echo $PATH
 return
