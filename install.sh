@@ -35,8 +35,8 @@ echo
 
 # vimrc
 if [ -f /etc/vim/vimrc ] && [ ! -f /etc/vim/vimrc.backup ]; then
-	echo 'Moving             /etc/vim/vimrc -> /etc/vimrc.backup'
-	mv /etc/vim/vimrc /etc/vimrc.backup
+	echo 'Moving            /etc/vim/vimrc -> /etc/vim/vimrc.backup'
+	mv /etc/vim/vimrc /etc/vim/vimrc.backup
 fi
 if [ ! -f /etc/vim/vimrc ]; then
 	echo -n 'Creating symlink '
