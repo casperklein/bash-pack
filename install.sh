@@ -6,6 +6,7 @@ apt-get update &&
 apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormake curl dcfldd git htop lynx most openssl procps pv tcpflow vim wget
 echo
 
+# bashrc
 if [ ! -f ~/.bashrc.local ]; then
 	echo 'Creating         ' ~/.bashrc.local
 	echo 'return' > ~/.bashrc.local
@@ -24,6 +25,7 @@ fi
 
 echo
 
+# inputrc
 if [ ! -f ~/.inputrc ]; then
 	echo -n 'Creating symlink '
 	ln -sv "$DIR"/inputrc ~/.inputrc
@@ -31,7 +33,12 @@ fi
 
 echo
 
-if [ ! -f /etc/vim/vimrc.local ]; then
+# vimrc
+if [ -f /etc/vim/vimrc ] && [ ! -f /etc/vim/vimrc.backup ]; then
+	echo 'Moving             /etc/vim/vimrc -> /etc/vimrc.backup'
+	mv /etc/vim/vimrc /etc/vimrc.backup
+fi
+if [ ! -f /etc/vim/vimrc ]; then
 	echo -n 'Creating symlink '
-	ln -sv "$DIR"/vimrc.local /etc/vim/vimrc.local
+	ln -sv "$DIR"/vimrc /etc/vim/vimrc
 fi
