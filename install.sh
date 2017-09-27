@@ -49,3 +49,6 @@ if [ $ROOT ]; then
 		ln -sv "$DIR"/vimrc /etc/vim/vimrc
 	fi
 fi
+
+echo 'Done.'
+echo
