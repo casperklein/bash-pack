@@ -3,7 +3,9 @@
 DIR=$(dirname "$(readlink -f "$0")")
 
 # running as root?
-if [ "$(id -u)" == "0" ]; then
+[ "$(id -u)" == "0" ] && ROOT=true
+
+if [ $ROOT ]; then
 	apt-get update &&
 	apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormake curl dcfldd git htop lynx most openssl procps pv tcpflow vim wget
 fi
@@ -37,11 +39,13 @@ fi
 echo
 
 # vimrc
-if [ -f /etc/vim/vimrc ] && [ ! -f /etc/vim/vimrc.backup ]; then
-	echo 'Moving            /etc/vim/vimrc -> /etc/vim/vimrc.backup'
-	mv /etc/vim/vimrc /etc/vim/vimrc.backup
-fi
-if [ ! -f /etc/vim/vimrc ]; then
-	echo -n 'Creating symlink '
-	ln -sv "$DIR"/vimrc /etc/vim/vimrc
+if [ $ROOT ]; then
+	if [ -f /etc/vim/vimrc ] && [ ! -f /etc/vim/vimrc.backup ]; then
+		echo 'Moving            /etc/vim/vimrc -> /etc/vim/vimrc.backup'
+		mv /etc/vim/vimrc /etc/vim/vimrc.backup
+	fi
+	if [ ! -f /etc/vim/vimrc ]; then
+		echo -n 'Creating symlink '
+		ln -sv "$DIR"/vimrc /etc/vim/vimrc
+	fi
 fi
