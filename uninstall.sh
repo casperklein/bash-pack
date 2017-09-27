@@ -2,6 +2,9 @@
 
 DIR=$(dirname "$(readlink -f "$0")")
 
+# running as root?
+[ "$(id -u)" == "0" ] && ROOT=true
+
 # bashrc
 if [ "$(readlink -f ~/.bashrc)" == "$DIR/bashrc" ] && [ -f ~/.bashrc.backup ]; then
 	echo 'Restoring' ~/.bashrc.backup '->' ~/.bashrc
@@ -14,19 +17,23 @@ fi
 
 # vimrc.local
 # temp
-if [ "$(readlink -f /etc/vim/vimrc.local)" == "$DIR/vimrc.local" ]; then
-	echo "Removing symlink /etc/vim/vimrc.local -> $DIR/vimrc.local"
-	rm /etc/vim/vimrc.local
-else
-	echo 'Error: /etc/vim/vimrc.local not found.' >&2
+if [ $ROOT ]; then
+	if [ "$(readlink -f /etc/vim/vimrc.local)" == "$DIR/vimrc.local" ]; then
+		echo "Removing symlink /etc/vim/vimrc.local -> $DIR/vimrc.local"
+		rm /etc/vim/vimrc.local
+	else
+		echo 'Error: /etc/vim/vimrc.local not found.' >&2
+	fi
 fi
 
-if [ "$(readlink -f /etc/vim/vimrc)" == "$DIR/vimrc" ]; then
-	echo 'Restoring /etc/vim/vimrc.backup -> /etc/vim/vimrc'
-	rm /etc/vim/vimrc &&
-	mv /etc/vim/vimrc.backup /etc/vim/vimrc
-else
-	echo 'Error: /etc/vim/vimrc not found.' >&2
+if [ $ROOT ]; then
+	if [ "$(readlink -f /etc/vim/vimrc)" == "$DIR/vimrc" ]; then
+		echo 'Restoring /etc/vim/vimrc.backup -> /etc/vim/vimrc'
+		rm /etc/vim/vimrc &&
+		mv /etc/vim/vimrc.backup /etc/vim/vimrc
+	else
+		echo 'Error: /etc/vim/vimrc not found.' >&2
+	fi
 fi
 
 # inputrc
