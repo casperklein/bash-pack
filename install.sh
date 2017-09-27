@@ -2,8 +2,11 @@
 
 DIR=$(dirname "$(readlink -f "$0")")
 
-apt-get update &&
-apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormake curl dcfldd git htop lynx most openssl procps pv tcpflow vim wget
+# running as root?
+if [ "$(id -u)" == "0" ]; then
+	apt-get update &&
+	apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormake curl dcfldd git htop lynx most openssl procps pv tcpflow vim wget
+fi
 echo
 
 # bashrc
