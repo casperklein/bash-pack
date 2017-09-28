@@ -1,0 +1,9 @@
+#!/bin/bash
+
+[ -z "$1" ] && {
+	echo -e "Search file by case insensitive partial <filename>.\n" >&2
+	echo -e "Syntax: ${0##*/} <filename>\n" >&2
+	exit 1
+}
+
+find -iname "*$1*"
