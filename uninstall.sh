@@ -15,17 +15,15 @@ else
 	echo 'Error: NOT removing' ~/.bashrc >&1
 fi
 
-# vimrc.local
-# temp
-if [ $ROOT ]; then
-	if [ "$(readlink -f /etc/vim/vimrc.local)" == "$DIR/vimrc.local" ]; then
-		echo "Removing symlink /etc/vim/vimrc.local -> $DIR/vimrc.local"
-		rm /etc/vim/vimrc.local
-	else
-		echo 'Error: /etc/vim/vimrc.local not found.' >&2
-	fi
+# inputrc
+if [ "$(readlink -f ~/.inputrc)" == "$DIR/inputrc" ]; then
+	echo 'Removing symlink' ~/.inputrc "-> $DIR/inputrc"
+	rm ~/.inputrc
+else
+	echo 'Error:' ~/.inputrc 'not found.' >&2
 fi
 
+# vimrc.local
 if [ $ROOT ]; then
 	if [ "$(readlink -f /etc/vim/vimrc)" == "$DIR/vimrc" ]; then
 		echo 'Restoring /etc/vim/vimrc.backup -> /etc/vim/vimrc'
@@ -36,12 +34,14 @@ if [ $ROOT ]; then
 	fi
 fi
 
-# inputrc
-if [ "$(readlink -f ~/.inputrc)" == "$DIR/inputrc" ]; then
-	echo 'Removing symlink' ~/.inputrc "-> $DIR/inputrc"
-	rm ~/.inputrc
-else
-	echo 'Error:' ~/.inputrc 'not found.' >&2
+# temp
+if [ $ROOT ]; then
+	if [ "$(readlink -f /etc/vim/vimrc.local)" == "$DIR/vimrc.local" ]; then
+		echo "Removing symlink /etc/vim/vimrc.local -> $DIR/vimrc.local"
+		rm /etc/vim/vimrc.local
+	else
+		echo 'Error: /etc/vim/vimrc.local not found.' >&2
+	fi
 fi
 
 # bashrc.local
