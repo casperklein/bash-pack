@@ -147,4 +147,12 @@ delay() {
 	done
 }
 
+# if WSL, then create lowercase aliases for windows executables in Windows\System32 directory
+if [ -d /mnt/c/Windows/System32 ]; then
+        PATH=$PATH:/mnt/c/Windows/System32/
+        for i in $(find /mnt/c/Windows/System32 -maxdepth 1 -type f -name '*\.EXE'); do BASENAME=${i##*/}; alias ${BASENAME,,}=\'$(basename $i)\' ; done
+	# empty 'low' alias, to avoid ionice error: ioprio_set failed: Invalid argument
+	alias low=''
+fi
+
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local
