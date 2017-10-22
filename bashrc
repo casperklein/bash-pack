@@ -88,7 +88,7 @@ alias sha256sum='low sha256sum'
 #alias iptraf='echo iptraf is inaccurate. Use nethogs instead.; [ $TERM == "screen" ] && iptraf -d eth0 || TERM=linux iptraf -d eth0'
 alias iptraf='echo -e "\e[1;32miptraf is inaccurate. Staring iptraf-ng instead..\e[0m"; iptraf-ng'
 alias iptraf-ng='[ $TERM == "screen" ] && iptraf-ng -d eth0 || TERM=linux iptraf-ng -d eth0'
-alias htop='[ $TERM == "xterm" ] && low htop || TERM=screen-256color low htop'
+alias htop='[[ $TERM == xterm* ]] && low htop || TERM=screen-256color low htop'
 
 # Some more alias to avoid making mistakes:
 alias rm='low rm -i'
