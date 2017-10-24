@@ -7,7 +7,7 @@ DIR=$(dirname "$(readlink -f "$0")")
 
 if [ $ROOT ]; then
 	apt-get update &&
-	apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormake curl dcfldd git htop lynx most openssl procps pv tcpflow vim wget
+	apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormake curl dcfldd git htop locate lynx most openssl procps pv tcpflow vim wget
 fi
 echo
 
