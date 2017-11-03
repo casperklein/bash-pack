@@ -33,6 +33,5 @@ if [ ! -z "$PS1" ]; then # prevent WinSCP issues
 		history -a
 	}
 	PROMPT_COMMAND=bash_prompt_command
-	#PS1='\[\e[0;36m\]\h\[\e[0;32m\]:\w\[$RES\]\$\[\e[0m\] '
 	PS1='\[$RST\]\[$CYAN\]\h\[$GREEN\]:\w\[$RES\]\$\[$RST\] '
 fi
