@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#test
 # running as root?
 if [ "$(id -u)" == "0" ]; then
 	cd /scripts &&
