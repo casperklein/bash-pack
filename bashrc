@@ -100,7 +100,6 @@ alias reboot='echo Are you sure? #'
 # Writes bash history immediately;  Useful for concurrent user log ins
 # Applies only on interactive shells
 shopt -s histappend
-# PROMPT_COMMAND 'history -a' in /scripts/bash-prompt ausgelagert
 
 # Save execution time in history
 HISTTIMEFORMAT='%d.%m.%Y %H:%M:%S '
