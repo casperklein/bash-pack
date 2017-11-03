@@ -3,7 +3,11 @@
 # running as root?
 if [ "$(id -u)" == "0" ]; then
 	cd /scripts &&
-	git fetch > /dev/null || exit 1
+	git fetch &> /dev/null || {
+		echo "Error: 'git fetch' failed." >&2
+		echo >&2
+		exit 1
+	}
 	DIFF=$(PAGER=cat git log HEAD..origin)
 	if [ ! -z "$DIFF" ]; then
 	       	echo "Commits to pull:"
