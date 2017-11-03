@@ -3,7 +3,7 @@
 # running as root?
 if [ "$(id -u)" == "0" ]; then
 	cd /scripts &&
-	git fetch
+	git fetch > /dev/null
 	DIFF=$(PAGER=cat git log HEAD..origin)
 	if [ ! -z "$DIFF" ]; then
 	       	echo "Commits to pull:"
