@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# See also decryptFile
+
+# Encryption
+ENCKEY=''
+DIGEST='sha256'
+CIPHER='aes-256-cbc'
+SUFFIX=".$DIGEST.$CIPHER.enc"
+
+# pv
+BLOCKSIZE=16
+
+if [ $# -lt 1 ]; then
+	echo -e "Encrypt a file.\n" >&2
+	echo -e "Cipher: $CIPHER" >&2
+	echo -e "Digest: $DIGEST\n" >&2
+	echo -e "Usage: $(basename "$0") <input> [<output>]\n" >&2
+	echo -e "If <output> is - then output is redirected to STDOUT" >&2
+	echo -e "If <output> is empty '$SUFFIX' is appended to input file name\n" >&2
+	exit 1
+fi
+
+if [ ! -e "$1" ]; then # -f does not catch FIFOs
+	echo -e "Error: File '$1' not found.\n" >&2
+	exit 1
+fi
+
+checkBinarys() {
+	#http://stackoverflow.com/a/677212/568737
+	BINS=("$@")
+	for BIN in "${BINS[@]}"; do
+		hash $BIN 2>/dev/null || {
+			echo -e "Error: Binary '$BIN' is missing.\n" >&2
+			exit 1
+		}
+	done
+}
+
+# Check if all needed binarys are present
+checkBinarys "openssl" "pv"
+
+if [ ! $ENCKEY ]; then
+	read -s -p "Enter password: " ENCKEY
+	[ ! $ENCKEY ] && exit 1
+fi
+
+if [ "$2" == "-" ]; then
+	# STDOUT
+	if [ ! -p "$1" ]; then
+		# no FIFO
+		# Encrypt & Upload
+		openssl "$CIPHER" -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
+		pv -bper -s $(( ($(stat -c%s "$1") + $BLOCKSIZE) / $BLOCKSIZE * $BLOCKSIZE + $BLOCKSIZE)) 
+	else
+		# FIFO
+		openssl "$CIPHER" -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
+		pv -bper
+	fi
+else
+	# OUTPUT to FILE
+	[ "$2" == "" ] && set "$1" "$1$SUFFIX"
+	echo "Encrypting: $1 --> $2"
+	if [ ! -p "$1" ]; then
+		# no FIFO
+		# Encrypt & Upload
+		openssl "$CIPHER" -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
+		pv -bper -s $(( ($(stat -c%s "$1") + $BLOCKSIZE) / $BLOCKSIZE * $BLOCKSIZE + $BLOCKSIZE)) > "$2"
+	else
+		# FIFO
+		openssl "$CIPHER" -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
+		pv -bper > "$2"
+	fi
+fi
