@@ -42,8 +42,10 @@ checkBinarys "openssl" "pv"
 
 if [ ! $ENCKEY ]; then
 	read -s -p "Enter password: " ENCKEY
+	echo
 	[ ! $ENCKEY ] && exit 1
 	read -s -p "Repeat password: " ENCKEY2
+	echo
 	if [ "$ENCKEY" != "$ENCKEY2" ]; then
 		echo -e "Error. Passwords not matching.\n" >&2
 		exit 1
