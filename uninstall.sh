@@ -23,7 +23,7 @@ else
 	echo 'Error:' ~/.inputrc 'not found.' >&2
 fi
 
-# vimrc.local
+# vimrc
 if [ $ROOT ]; then
 	if [ "$(readlink -f /etc/vim/vimrc)" == "$DIR/vimrc" ]; then
 		echo 'Restoring /etc/vim/vimrc.backup -> /etc/vim/vimrc'
