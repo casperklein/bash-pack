@@ -98,7 +98,7 @@ alias ar='exe service apache2 restart'
 
 a2() {
         command a2${1} "$2"
-        service apache2 reload
+        exe service apache2 reload
 }
 
 a2ensite()  { a2 ensite "$1";  }

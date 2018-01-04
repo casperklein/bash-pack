@@ -1,0 +1,62 @@
+#!/bin/bash
+
+(tty -s) && {
+	RED=$(tput setaf 1)
+	GREEN=$(tput setaf 2)
+	YELLOW=$(tput setaf 3)
+	RESET=$(tput sgr0)
+}
+DELETE='\r\033[K'
+
+exe() {
+	# build $CMD with quoted command and arguments
+	for i in "$@"; do
+		((j++))
+		if [ $j -gt 1 ]; then
+			CMD=$CMD' '\'"$i"\'
+		else
+			CMD=\'"$i"\'
+		fi
+	done
+
+	# in progress
+	echo -ne "[ $YELLOW..$RESET ] $YELLOW>>$RESET $CMD"
+	
+	if RES=$("$@" 2>&1); then
+		# success; is there output?
+		[ ! -z "$RES" ] && RES=" $YELLOW>>$RESET $GREEN$RES$RESET"
+		echo -en $DELETE
+		echo -e "[$GREEN OK $RESET] $YELLOW>>$RESET $CMD$RES"
+		return 0
+	else
+		# errocode > 0
+		CODE=$?
+		echo -en $DELETE
+		echo -e "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD $YELLOW>>$RESET $RED$RES$RESET"
+		return $CODE
+	fi
+}
+
+if [ $# -gt 0 ]; then
+	exe "$@"
+	exit $?
+else
+	echo -e "Executes a command and show result/output in a nice way.\n" >&2
+	echo -e "Usage: ${0##*/} <command> <arguments>\n" >&2
+	echo -e "Example: exe echo 'hello world'" >&2
+	echo -e "Result:  [$GREEN OK $RESET] $YELLOW>>$RESET 'echo' 'hello world' $YELLOW>>$RESET ${GREEN}hello world$RESET\n" >&2
+	exit 1
+fi
+
+<<"DEMO"
+# no output
+exe sleep 2
+unset j
+
+# output: hello world hello world
+exe echo "hello world" "hello" "world"
+unset j
+
+# output: error message
+exe "#show me an error" now
+DEMO
