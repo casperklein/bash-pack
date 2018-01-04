@@ -31,10 +31,6 @@ alias grep='grep --color=auto'
 alias highlight='ccze -CA'
 
 # Some shortcuts
-alias a2ensite='sleep 2 && /etc/init.d/apache2 reload && echo "Apache: reloaded" & a2ensite'
-alias a2dissite='sleep 2 && /etc/init.d/apache2 reload && echo "Apache: reloaded" & a2dissite'
-alias a2enmod='sleep 2 && /etc/init.d/apache2 reload && echo "Apache: reloaded" & a2enmod'
-alias a2dismod='sleep 2 && /etc/init.d/apache2 reload && echo "Apache: reloaded" & a2dismod'
 alias apt='aptitude'
 alias at='at -v'
 alias cata='cat -A' # -vET use ^ and M- notation for non-printable (binary) data; prevent piping binary data :( cat binary > tmp; diff binary tmp
@@ -96,6 +92,19 @@ alias rm='low rm -i'
 alias cp='low cp -i'
 alias mv='low mv -i'
 alias reboot='echo Are you sure? #'
+
+# Apache stuff
+alias ar='exe service apache2 restart'
+
+a2() {
+        command a2${1} "$2"
+        service apache2 reload
+}
+
+a2ensite()  { a2 ensite "$1";  }
+a2dissite() { a2 dissite "$1"; }
+a2enmod()   { a2 enmod "$1";   }
+a2dismod()  { a2 dismod "$1";  }
 
 # Writes bash history immediately;  Useful for concurrent user log ins
 # Applies only on interactive shells
