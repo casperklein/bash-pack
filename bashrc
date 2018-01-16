@@ -19,7 +19,7 @@ export EDITOR='vi' # nowadays not really needed anymore
 export LS_OPTIONS='--color=auto'
 eval "`dircolors`"
 alias ls='ls $LS_OPTIONS'
-alias ll='ls $LS_OPTIONS -Ahl'
+alias ll='LC_COLLATE=C ls $LS_OPTIONS -Ahl' # https://unix.stackexchange.com/a/39853/45235
 alias l='ls $LS_OPTIONS -Ahl'
 alias diff='colordiff'
 #alias tail='colortail -q'
