@@ -24,15 +24,35 @@ exe() {
 	
 	if RES=$("$@" 2>&1); then
 		# success; is there output?
-		[ ! -z "$RES" ] && RES=" $YELLOW>>$RESET $GREEN$RES$RESET"
+		[ ! -z "$RES" ] && {
+			# output more than one line?
+			[[ "$RES" == *$'\n'* ]] && {
+				COUNT=$(( ${#CMD} + 14 ))
+				SPACE=$(printf "%${COUNT}s")
+				RES=$(echo -n "$RES" | sed "s/^/$SPACE/g")
+				RES=${RES:$COUNT}
+			}
+			RES=" $YELLOW>>$RESET $GREEN$RES$RESET"
+		}
 		echo -en $DELETE
 		echo -e "[$GREEN OK $RESET] $YELLOW>>$RESET $CMD$RES"
 		return 0
 	else
 		# errocode > 0
 		CODE=$?
+		# is there output?
+		[ ! -z "$RES" ] && {
+			# output more than one line?
+			[[ "$RES" == *$'\n'* ]] && {
+				COUNT=$(( ${#CMD} + 17 ))
+				SPACE=$(printf "%${COUNT}s")
+				RES=$(echo -n "$RES" | sed "s/^/$SPACE/g")
+				RES=${RES:$COUNT}
+			}
+			RES=" $YELLOW>>$RESET $RED$RES$RESET"
+		}
 		echo -en $DELETE
-		echo -e "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD $YELLOW>>$RESET $RED$RES$RESET"
+		echo -e "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD$RES"
 		return $CODE
 	fi
 }
