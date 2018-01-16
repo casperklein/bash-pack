@@ -25,13 +25,13 @@ exe() {
 	if RES=$("$@" 2>&1); then
 		# success; is there output?
 		[ ! -z "$RES" ] && {
-			# output more than one line?
-			[[ "$RES" == *$'\n'* ]] && {
+			# more than one line output?
+			if [[ "$RES" == *$'\n'* ]]; then
 				COUNT=$(( ${#CMD} + 14 ))
 				SPACE=$(printf "%${COUNT}s")
 				RES=$(echo -n "$RES" | sed "s/^/$SPACE/g")
 				RES=${RES:$COUNT}
-			}
+			fi
 			RES=" $YELLOW>>$RESET $GREEN$RES$RESET"
 		}
 		echo -en $DELETE
@@ -42,13 +42,13 @@ exe() {
 		CODE=$?
 		# is there output?
 		[ ! -z "$RES" ] && {
-			# output more than one line?
-			[[ "$RES" == *$'\n'* ]] && {
+			# more than one line output?
+			if [[ "$RES" == *$'\n'* ]]; then
 				COUNT=$(( ${#CMD} + 17 ))
 				SPACE=$(printf "%${COUNT}s")
 				RES=$(echo -n "$RES" | sed "s/^/$SPACE/g")
 				RES=${RES:$COUNT}
-			}
+			fi
 			RES=" $YELLOW>>$RESET $RED$RES$RESET"
 		}
 		echo -en $DELETE
