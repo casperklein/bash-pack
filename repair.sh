@@ -7,7 +7,7 @@ if [ "$(id -u)" == "0" ]; then
 	cd $SCRIPTS &&
 	echo "Wiping local changes.."
 	echo
-	git fetch --all &&
+	git fetch &&
 	git reset --hard origin/master &&
 	echo &&
 	git status
