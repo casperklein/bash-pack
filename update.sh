@@ -1,8 +1,10 @@
 #!/bin/bash
 
+SCRIPTS=$(dirname "$(readlink -f "$0")")
+
 # running as root?
 if [ "$(id -u)" == "0" ]; then
-	cd /scripts &&
+	cd $SCRIPTS &&
 	git fetch &> /dev/null || {
 		echo "Error: 'git fetch' failed." >&2
 		echo >&2

@@ -1,16 +1,17 @@
 umask 022
 
 # Path stuff
-export PATH=$PATH:/scripts
+SCRIPTS=$(dirname "$(readlink -f "$BASH_SOURCE")")
+export PATH=$PATH:$SCRIPTS
 syslog=/var/log/syslog
 
 # Useful vars
 export ua='Mozilla/5.0 (Windows NT 5.1; rv:23.0) Gecko/20100101 Firefox/23.0'
 
 # Prompt
-source /scripts/bash-prompt
-source /scripts/apt-completion
-source /scripts/tmux-completion
+source "$SCRIPTS"/bash-prompt
+source "$SCRIPTS"/apt-completion
+source "$SCRIPTS"/tmux-completion
 
 # Color my life
 export PAGER='most'
@@ -56,7 +57,7 @@ alias less='less -i'
 alias locate='locate -i'
 alias locateu='updatedb && locate -i'
 alias loop='while [ true ]; do'
-alias mkcd='source /scripts/mkcd'
+alias mkcd="source \"$SCRIPTS\"/mkcd"
 alias mounti='mount | column -t | grep -P '\''.*?on\s+/\s+.*|$'\'
 alias mysqlctl='/etc/init.d/mysql'
 alias pgrep='pgrep -x'
