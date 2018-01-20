@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=$(dirname "$(readlink -f "$0")")
+SCRIPTS=$(dirname "$(readlink -f "$0")")
 
 # running as root?
 [ "$(id -u)" == "0" ] && ROOT=true
@@ -25,7 +25,7 @@ fi
 
 if [ ! -f ~/.bashrc ]; then
 	echo -n 'Creating symlink '
-	ln -sv "$DIR"/bashrc ~/.bashrc
+	ln -sv "$SCRIPTS"/bashrc ~/.bashrc
 fi
 
 echo
@@ -33,7 +33,7 @@ echo
 # inputrc
 if [ ! -f ~/.inputrc ]; then
 	echo -n 'Creating symlink '
-	ln -sv "$DIR"/inputrc ~/.inputrc
+	ln -sv "$SCRIPTS"/inputrc ~/.inputrc
 fi
 
 echo
@@ -46,7 +46,7 @@ if [ $ROOT ]; then
 	fi
 	if [ ! -f /etc/vim/vimrc ]; then
 		echo -n 'Creating symlink '
-		ln -sv "$DIR"/vimrc /etc/vim/vimrc
+		ln -sv "$SCRIPTS"/vimrc /etc/vim/vimrc
 	fi
 fi
 

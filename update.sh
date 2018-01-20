@@ -22,5 +22,5 @@ if [ "$(id -u)" == "0" ]; then
 	git pull
 else
 	echo "Error: You must be root to run $0" >&2
-	echo
+	echo >&2
 fi
