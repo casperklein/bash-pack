@@ -35,6 +35,7 @@ alias highlight='ccze -CA'
 alias apt='aptitude'
 alias at='at -v'
 alias cata='cat -A' # -vET use ^ and M- notation for non-printable (binary) data; prevent piping binary data :( cat binary > tmp; diff binary tmp
+alias catz='zcat -f'
 alias cls='clear'
 alias clock='watch -n 1 "date +%T"'
 alias croncal='croncal.pl -f /etc/crontab -d 900'
