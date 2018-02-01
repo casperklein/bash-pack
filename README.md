@@ -1,15 +1,18 @@
 # bash-pack
 
+    DESTINATION=/scripts
+
 ## Download
     apt-get update
     apt-get install git
-    git clone https://github.com/casperklein/bash-pack.git /scripts
+    git clone https://github.com/casperklein/bash-pack.git $DESTINATION
 
 ## Install packages and setup symlinks
-    /scripts/install.sh
+    $DESTINATION/install.sh
 
 ## Update
-    /scripts/update.sh
+    $DESTINATION/update.sh
 
 ## Uninstall (symlinks only)
-    /scripts/uninstall.sh
+    $DESTINATION/uninstall.sh # (symlinks only)
+    rm -rf $DESTINATION       # remove complete
