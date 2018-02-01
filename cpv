@@ -1,0 +1,179 @@
+#!/bin/bash
+
+# cpv:      A file and directory copy tool with status indicators (thx to PV)
+# Version:  0.1
+# Build:    31-Jan-2018
+# Author:   Heiko Barth
+# Licence:  Beer-Ware (See: http://en.wikipedia.org/wiki/Beerware)
+
+for i in "$@"; do
+	shift
+	[ "$i" == "-f" ] && FORCE=true && continue
+	[ "$i" == "-v" ] && VERBOSE=true && continue
+	set -- "$@" "$i"
+done
+
+if [ $# -lt 2 ]; then
+	APP=${0##*/}
+	VER=0.1
+	echo "$APP $VER">&2
+	echo >&2
+	echo "Syntax: $APP <source file/directory> <destination file/directory>" >&2
+	echo "        $APP <source file/directory> [<more source files/directorys>] <destination directory>" >&2
+	echo >&2
+	echo "Options: -f  Force overwriting files" >&2
+	echo "         -v  Be verbose" >&2
+	echo >&2
+	exit 1
+fi
+
+# colors
+hash tput 2>/dev/null && {
+	RED=$(tput setaf 1)
+	GREEN=$(tput setaf 2)
+	YELLOW=$(tput setaf 3)
+	RESET=$(tput sgr0)
+}
+
+echoError() {
+	echo -e "$RED$1$RESET\n" >&2
+	exit 1
+}
+
+checkBinarys() {
+	for i in "$@"; do
+		hash $i 2>/dev/null || {
+	       		echo "Binary missing: $i" >&2
+			echo >&2
+			exit 1
+		}
+	done
+}
+checkBinarys "pv" "chown" "chmod" "find" "mkdir" "du" "tar" "bc"
+
+PV=tbper
+
+syncPermissions() {
+	chmod --reference="$1" "$2" &&
+	chown --reference="$1" "$2" || {
+		echoError "Error: chmod/chown failed."
+	}
+}
+
+# https://gist.github.com/agunnerson-ibm/efca449565a3e7356906/c3bde6edccada9521febe8b5f2e650514e3bb1c2
+humanReadable() {
+	local abbrevs=(
+		$((1 << 60)):ZB
+		$((1 << 50)):EB
+		$((1 << 40)):TB
+		$((1 << 30)):GB
+		$((1 << 20)):MB
+		$((1 << 10)):KB
+		$((1)):bytes
+	)
+
+	local bytes="${1}"
+	local precision="${2}"
+
+	if [[ "${bytes}" == "1" ]]; then
+		echo "1 byte"
+	else
+		for item in "${abbrevs[@]}"; do
+			local factor="${item%:*}"
+			local abbrev="${item#*:}"
+			if [[ "${bytes}" -ge "${factor}" ]]; then
+				local size="$(bc -l <<< "${bytes} / ${factor}")"
+				printf "%.*f %s\n" "${precision}" "${size}" "${abbrev}"
+				break
+			fi
+		done
+	fi
+}
+
+if [ $# -eq 2 ]; then
+	[ ! -e "$1" ] && echoError "Error: '$1' does not exist."
+	
+	# file to dir
+	if [ -f "$1" ] && [ -d "$2" ]; then
+		BASE=$(basename "$1")
+		if [ $(readlink -f "$1") == $(readlink -f "$2"/"$BASE") ]; then
+			echoError "Error: Source and destination file is the same."
+		elif [ ! $FORCE ] && [ -f "$2"/"$BASE" ]; then
+			echo "File '$2/$BASE' already exists." >&2
+			read -p 'Do you want to overwrite? [y/N] ' input
+			[ "$input" != "y" ] && exit 1
+		fi
+		SIZEH=$(humanReadable $(stat -c%s "$1") 0)
+		echo -e "${YELLOW}File: $RESET$1 [$SIZEH] $YELLOW-->$RESET $(readlink -f "$2"/"$BASE")" # readlink removes double slash
+		pv -$PV "$1" > "$2"/"$BASE" &&
+		syncPermissions "$1" "$2"/"$BASE" &&
+		echo -e "${GREEN}OK$RESET" || echo -e "${RED}ERROR$RESET"
+		exit
+	# file to file
+	elif [ -f "$1" ]; then
+		if [ $(readlink -f "$1") == $(readlink -f "$2") ]; then
+			echoError "Error: Source and destination file is the same."
+		elif [ ! $FORCE ] && [ -f "$2" ]; then
+			echo "File '$2' already exists." >&2
+			read -p 'Do you want to overwrite? [y/N] ' input
+			[ "$input" != "y" ] && exit 1
+		fi
+		SIZEH=$(humanReadable $(stat -c%s "$1") 0)
+		echo -e "${YELLOW}File: $RESET$1 [$SIZEH] $YELLOW-->$RESET $(readlink -f "$2")" # readlink removes double slash
+		pv -$PV "$1" > "$2" &&
+		syncPermissions "$1" "$2" &&
+		echo -e "${GREEN}OK$RESET" || echo -e "${RED}ERROR$RESET"
+		exit
+	fi
+fi
+
+DST=${@: -1} # last argument
+
+if [ ! -d "$DST" ]; then
+	[ $VERBOSE ] && echo "${YELLOW}Creating directory: $RESET$DST"
+	mkdir -p "$DST" 2> /dev/null || echoError "Error: Could not create directory '$DST'."
+else
+	if [ ! $FORCE ]; then
+		echo "Destination directory '$DST' already exist." >&2
+		read -p 'Files/Directorys in '$DST' will be overwritten! Continue? [y/N] ' input
+		[ "$input" != "y" ] && exit 1
+	fi
+fi
+
+for i in "$@"; do
+	[ ! -e "$i" ] && echoError "Error: '$i' does not exist."
+done
+
+for i in "$@"; do
+	((j++))
+	[ $# == $j ] && break
+	
+	iBASE=$(basename "$i")
+	if [ -f "$i" ]; then
+		# file to file
+		SIZEH=$(humanReadable $(stat -c%s "$i") 0)
+		echo "${YELLOW}File: $RESET$i [$SIZEH] $YELLOW-->$RESET $(readlink -f "$DST"/"$iBASE")" # readlink removes double slash
+		pv -$PV "$i" > "$DST"/"$iBASE" &&
+		syncPermissions "$i" "$DST"/"$iBASE" && echo -e "${GREEN}OK$RESET" || echo -e "${RED}ERROR$RESET"
+	elif [ -d "$i" ]; then
+		SIZE=$(du -sb "$i" | grep -oP '^[0-9]+')
+		SIZEH=$(humanReadable $SIZE 0)
+		[ $VERBOSE ] && TAR=cvC || TAR=cC
+		if [ $# -eq 2 ]; then
+			# 1 dir to 1 dir
+			echo -e "${YELLOW}Directory:$RESET $i [$SIZEH] $YELLOW-->$RESET $(readlink -f "$DST")" # readlink removes double slash
+			tar $TAR "$i" . | pv -${PV}s $SIZE | tar xC "$DST" && echo -e "${GREEN}OK$RESET" || echo -e "${RED}ERROR$RESET"
+		else
+			# dir to dir
+			echo "${YELLOW}Directory:$RESET $i [$SIZEH] $YELLOW-->$RESET $(readlink -f "$DST"/$(basename "$i"))" # readlink removes double slash
+			tar $TAR "$(dirname "$i")" $iBASE | pv -${PV}s $SIZE | tar xC "$DST" && echo -e "${GREEN}OK$RESET" || echo -e "${RED}ERROR$RESET"
+		fi
+	else
+		echo >&2
+		echo "${RED}Error. '$i' is not a file or directory.$RESET" >&2
+		echo >&2
+		echo "${YELLOW}What did you try to do? Please report :) THX$RESET" >&2
+		exit 1
+	fi
+	echo
+done
