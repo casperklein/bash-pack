@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# cpv:      A file and directory copy tool with status indicators (thx to PV)
+# cpv:      A file and directory copy tool with status indicators (thx to pipe viewer)
 # Version:  0.1
 # Build:    31-Jan-2018
 # Author:   Heiko Barth
@@ -51,6 +51,7 @@ checkBinarys() {
 }
 checkBinarys "pv" "chown" "chmod" "find" "mkdir" "du" "tar" "bc"
 
+# pipe viewer options
 PV=tbper
 
 syncPermissions() {
