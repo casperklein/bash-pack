@@ -7,7 +7,7 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 
 if [ $ROOT ]; then
 	apt-get update &&
-	apt-get install aptitude boxes bsdmainutils ccze checkinstall colordiff colormake curl dcfldd git htop locate lynx most openssl procps pv tcpflow unzip vim wget
+	apt-get install aptitude bc boxes bsdmainutils ccze checkinstall colordiff colormake coreutils curl findutils git htop locate lynx most openssl procps pv tar tcpflow unzip vim wget
 fi
 echo
 
