@@ -14,6 +14,7 @@ if [ "$(id -u)" == "0" ]; then
 	git reset --hard origin/master &&
 	echo &&
 	git status
+	echo
 else
 	echo "Error: You must be root to run $0" >&2
 	echo >&2
