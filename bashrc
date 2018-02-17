@@ -12,6 +12,7 @@ export ua='Mozilla/5.0 (Windows NT 5.1; rv:23.0) Gecko/20100101 Firefox/23.0'
 source "$SCRIPTS"/bash-prompt
 source "$SCRIPTS"/apt-completion
 source "$SCRIPTS"/tmux-completion
+source /usr/share/bash-completion/bash_completion
 
 # Color my life
 export PAGER='most'
@@ -98,8 +99,9 @@ alias reboot='echo Are you sure? #'
 alias ar='exe service apache2 restart'
 
 a2() {
-        command a2${1} "$2"
-        exe service apache2 reload
+	command a2${1} "$2" &&
+	exe apachectl configtest &&
+	exe service apache2 reload
 }
 
 a2ensite()  { a2 ensite "$1";  }

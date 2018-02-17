@@ -4,9 +4,10 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 
 # running as root?
 if [ "$(id -u)" == "0" ]; then
+	$SCRIPTS/repair.sh &&
 	cd $SCRIPTS &&
-	echo "Wiping local changes.."
-	echo
+	echo "Wiping local changes.." &&
+	echo &&
 	git fetch &&
 	git reset --hard origin/master &&
 	echo &&
