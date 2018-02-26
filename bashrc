@@ -93,7 +93,7 @@ alias htop='[[ $TERM == xterm* ]] && low htop || TERM=screen-256color low htop'
 alias rm='low rm -i'
 alias cp='low cp -i'
 alias mv='low mv -i'
-alias reboot='echo Are you sure? #'
+alias reboot='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y" ] && \reboot'
 
 # Apache stuff
 alias ar='exe service apache2 restart'
