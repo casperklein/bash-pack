@@ -97,7 +97,7 @@ if [ $# -eq 2 ]; then
 	# file to dir
 	if [ -f "$1" ] && [ -d "$2" ]; then
 		BASE=$(basename "$1")
-		if [ $(readlink -f "$1") == $(readlink -f "$2"/"$BASE") ]; then
+		if [ "$(readlink -f "$1")" == "$(readlink -f "$2"/"$BASE")" ]; then
 			echoError "Error: Source and destination file is the same."
 		elif [ ! $FORCE ] && [ -f "$2"/"$BASE" ]; then
 			echo "File '$2/$BASE' already exists." >&2
@@ -112,7 +112,7 @@ if [ $# -eq 2 ]; then
 		exit
 	# file to file
 	elif [ -f "$1" ]; then
-		if [ $(readlink -f "$1") == $(readlink -f "$2") ]; then
+		if [ "$(readlink -f "$1")" == "$(readlink -f "$2")" ]; then
 			echoError "Error: Source and destination file is the same."
 		elif [ ! $FORCE ] && [ -f "$2" ]; then
 			echo "File '$2' already exists." >&2
