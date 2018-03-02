@@ -20,7 +20,7 @@ exe() {
 	done
 
 	# in progress
-	echo -ne "[ $YELLOW..$RESET ] $YELLOW>>$RESET $CMD"
+	echo -n "[ $YELLOW..$RESET ] $YELLOW>>$RESET $CMD"
 	
 	if RES=$("$@" 2>&1); then
 		# success; is there output?
@@ -35,7 +35,7 @@ exe() {
 			RES=" $YELLOW>>$RESET $GREEN$RES$RESET"
 		}
 		echo -en $DELETE
-		echo -e "[$GREEN OK $RESET] $YELLOW>>$RESET $CMD$RES"
+		echo "[$GREEN OK $RESET] $YELLOW>>$RESET $CMD$RES"
 		return 0
 	else
 		# errocode > 0
@@ -52,7 +52,7 @@ exe() {
 			RES=" $YELLOW>>$RESET $RED$RES$RESET"
 		}
 		echo -en $DELETE
-		echo -e "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD$RES"
+		echo "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD$RES"
 		return $CODE
 	fi
 }
