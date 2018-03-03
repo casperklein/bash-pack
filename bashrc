@@ -97,7 +97,8 @@ alias reboot='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y"
 alias poweroff='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y" ] && poweroff'
 
 # Apache stuff
-alias ar='exe service apache2 restart'
+alias ac='exe apachectl configtest'
+alias ar='exe apachectl configtest && exe service apache2 restart'
 
 a2() {
 	command a2${1} "$2" &&
