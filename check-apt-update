@@ -8,6 +8,17 @@ GREEN='\e[0;32m'
 YELLOW='\e[0;33m'
 RESET='\e[0m'
 
+checkBinarys() {
+	for i in "$@"; do
+		hash $i 2>/dev/null || {
+			echo "Binary missing: $i" >&2
+			echo >&2
+			exit 1
+		}
+	done
+}
+checkBinarys "dirname" "aptitude" "apt"
+
 cecho() {
 	if [ -t 1 ]; then
 		# Only use colors when file descriptor FD is open and refers to a terminal.
