@@ -5,8 +5,8 @@
 	GREEN=$(tput setaf 2)
 	YELLOW=$(tput setaf 3)
 	RESET=$(tput sgr0)
-}
-DELETE='\r\033[K'
+	DELETE='\r\033[K'
+} ||	DELETE='\n'
 
 exe() {
 	# build $CMD with quoted command and arguments
