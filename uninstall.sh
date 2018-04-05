@@ -46,3 +46,7 @@ fi
 
 # bashrc.local
 [ -f ~/.bashrc.local ] && echo && rm -i ~/.bashrc.local
+
+echo
+echo "To completly remove bash-pack, run: rm -rf $DIR"
+echo
