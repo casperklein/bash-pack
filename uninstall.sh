@@ -34,16 +34,6 @@ if [ $ROOT ]; then
 	fi
 fi
 
-# temp
-if [ $ROOT ]; then
-	if [ "$(readlink -f /etc/vim/vimrc.local)" == "$DIR/vimrc.local" ]; then
-		echo "Removing symlink /etc/vim/vimrc.local -> $DIR/vimrc.local"
-		rm /etc/vim/vimrc.local
-	else
-		echo 'Error: /etc/vim/vimrc.local not found.' >&2
-	fi
-fi
-
 # bashrc.local
 [ -f ~/.bashrc.local ] && echo && rm -i ~/.bashrc.local
 
