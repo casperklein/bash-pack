@@ -1,6 +1,6 @@
 # bash-pack
 
-    DESTINATION=/scripts
+    DESTINATION=~/bash-pack
 
 ## Download
     apt-get update
