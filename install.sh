@@ -13,9 +13,6 @@ if [ $ROOT ]; then
 fi
 echo
 
-# save path
-echo "$SCRIPTS" > "$SCRIPTS"/bash-pack.path
-
 # bashrc
 if [ ! -f ~/.bashrc.local ]; then
 	echo 'Creating         ' ~/.bashrc.local
