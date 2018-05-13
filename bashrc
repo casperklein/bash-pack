@@ -73,6 +73,7 @@ alias tailf='tail -F'
 alias tmux='tmux a'
 alias top='htop'
 alias uniqq='awk '\''!x[$0]++'\'''
+alias vidir='vidir -v'
 alias visudo='VISUAL=vi visudo'
 alias wget='wget -U "$ua"'
 # remove ?querystring appended to filename by wget
