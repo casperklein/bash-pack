@@ -4,7 +4,7 @@
 
 if [ $# -ne 1 ]; then
 	echo -e "Extract common archives.\n" >&2
-	echo -e "Syntax: $(basename "$0") <archive>\n" >&2
+	echo -e "Syntax: ${0##*/} <archive>\n" >&2
 	exit 1
 fi
 
