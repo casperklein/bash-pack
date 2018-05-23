@@ -63,7 +63,7 @@ if [ $# -gt 0 ]; then
 else
 	echo -e "Executes a command and show result/output in a nice way.\n" >&2
 	echo -e "Usage: ${0##*/} <command> <arguments>\n" >&2
-	echo -e "Example: exe echo 'hello world'" >&2
+	echo -e "Example: ${0##*/} echo 'hello world'" >&2
 	echo -e "Result:  [$GREEN OK $RESET] $YELLOW>>$RESET 'echo' 'hello world' $YELLOW>>$RESET ${GREEN}hello world$RESET\n" >&2
 	exit 1
 fi
