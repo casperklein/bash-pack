@@ -13,6 +13,6 @@
 ## Update
     $DESTINATION/update.sh
 
-## Uninstall (symlinks only)
+## Uninstall
     $DESTINATION/uninstall.sh # (symlinks only)
     rm -rf $DESTINATION       # remove complete
