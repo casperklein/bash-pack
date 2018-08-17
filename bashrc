@@ -52,6 +52,7 @@ alias hexdump='hexdump -C'
 #alias httpheader='curl -I --compress' # HEAD Request. Not all headers are included, e.g. the Expire and Last-Modified header
 alias httpheader='curl -s --compress -D- -o /dev/null' # File is completely downloaded. Probably not good for large files..
 alias insserv='insserv -v'
+alias ipcalc='ipcalc -nb'
 alias jobs='jobs -l'
 alias killall='killall -v -e'
 alias less='less -i'
