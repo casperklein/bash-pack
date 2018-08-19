@@ -46,12 +46,18 @@ set incsearch		" Incremental search
 "set hidden             " Hide buffers when they are abandoned
 set mouse=a		" Enable mouse usage (all modes)
 
-" Source a global configuration file if available
-if filereadable("/etc/vim/vimrc.local")
-  source /etc/vim/vimrc.local
-endif
-
 " Tab2Space
 " Space2Tab
 :command! -range=% -nargs=0 T execute '<line1>,<line2>s#^\t\+#\=repeat(" ", len(submatch(0))*' . &ts . ')'
 :command! -range=% -nargs=0 S execute '<line1>,<line2>s#^\( \{'.&ts.'\}\)\+#\=repeat("\t", len(submatch(0))/' . &ts . ')'
+
+" toggle between 'set paste' & 'set nopaste'
+set pastetoggle=<F1>
+
+" Certain configs in /etc/vimrc are ignored if ~/.vimrc does not exist --> https://github.com/vim/vim/issues/2042
+let skip_defaults_vim = 1
+
+" Source a global configuration file if available
+if filereadable("/etc/vim/vimrc.local")
+  source /etc/vim/vimrc.local
+endif
