@@ -4,7 +4,7 @@
 APP=${0##*/}
 
 # Uncomment to enable command logging to file
-LOG="/tmp/$APP.history"
+#LOG="/tmp/$APP.history"
 
 (tty -s) && {
 	RED=$(tput setaf 1)
