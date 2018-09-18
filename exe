@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Whats my name?
+APP=${0##*/}
+
+# Uncomment to enable command logging to file
+LOG="/tmp/$APP.history"
+
 (tty -s) && {
 	RED=$(tput setaf 1)
 	GREEN=$(tput setaf 2)
@@ -8,21 +14,52 @@
 	DELETE='\r\033[K'
 } ||	DELETE='\n'
 
+cleanUp() {
+	[ -f "$SCRIPT" ] && {
+		rm "$SCRIPT"
+	}
+	exit
+}
+
+trap cleanUp INT EXIT TERM
+
 exe() {
+	# Prepare script
+	SCRIPT=$(mktemp /tmp/$APP-XXX) || {
+		echo -e "Error: Could not create temporary script file.\n" >&2
+		exit 1
+	}
+	echo '#!/bin/bash' > "$SCRIPT"
+
 	# build $CMD with quoted command and arguments
+	# build script
 	for i in "$@"; do
-		((j++))
-		if [ $j -gt 1 ]; then
-			CMD=$CMD' '\'"$i"\'
-		else
-			CMD=\'"$i"\'
-		fi
+			# escape bash operators & buildins
+			if [ "$i" == '|' ] || [ "$i" == '<' ] || [ "$i" == '>' ] || [ "$i" == ';' ] || [ "$i" == '||' ] || [ "$i" == '&&' ] || [ "$i" == 'time' ]; then
+				CMD=$CMD" $i"
+				echo -n " $i" >> "$SCRIPT"
+			else
+				# since we use ' ourself, we need to escape it when writing to script
+				#i=$(echo "$i" | sed 's/'\''/'\''\\'\'\''/g') # use printf, to avoid problems with echo options in $i, e.g. -n
+				i=$(printf "%s\n" "$i" | sed 's/'\''/'\''\\'\'\''/g')
+				CMD=$CMD' '\'"$i"\'
+				echo -n " '$i'" >> "$SCRIPT"
+			fi
 	done
+	CMD=${CMD# }
+	chmod u+x "$SCRIPT"
+
+	# Logging
+	if [ -n "$LOG" ]; then
+		echo -ne $(date "+%F %T")"\t" >> "$LOG"
+		tail -1 "$SCRIPT" >> "$LOG"
+		echo >> "$LOG"
+	fi
 
 	# in progress
 	echo -n "[ $YELLOW..$RESET ] $YELLOW>>$RESET $CMD"
 	
-	if RES=$("$@" 2>&1); then
+	if RES=$($SCRIPT 2>&1); then
 		# success; is there output?
 		[ ! -z "$RES" ] && {
 			# more than one line output?
@@ -61,22 +98,25 @@ if [ $# -gt 0 ]; then
 	exe "$@"
 	exit $?
 else
-	echo -e "Executes a command and show result/output in a nice way.\n" >&2
-	echo -e "Usage: ${0##*/} <command> <arguments>\n" >&2
-	echo -e "Example: ${0##*/} echo 'hello world'" >&2
-	echo -e "Result:  [$GREEN OK $RESET] $YELLOW>>$RESET 'echo' 'hello world' $YELLOW>>$RESET ${GREEN}hello world$RESET\n" >&2
+	echo -e "Executes a command and show result/output in a nice way. Original return code is preserved.\n" >&2
+	echo -e "Usage: $APP <command> <arguments>\n" >&2
+
+	echo -e "Example: $APP echo 'hello world'\n" >&2
+	DEMO=$("$APP" echo 'hello world')
+	ERROR=$?
+	echo -e "Result:\n$DEMO" >&2
+	echo -e "Return code: $ERROR\n\n" >&2
+
+	echo -e "Example with error: $APP false 'hello world'\n" >&2
+	DEMO=$("$APP" false 'hello world')
+	ERROR=$?
+	echo -e "Result:\n$DEMO" >&2
+	echo -e "Return code: $ERROR\n\n" >&2
+
+	echo -e "Example with escaped pipe: $APP echo foo \| cat\n" >&2
+	DEMO=$("$APP" echo foo \| cat)
+	ERROR=$?
+	echo -e "Result:\n$DEMO" >&2
+	echo -e "Return code: $ERROR\n" >&2
 	exit 1
 fi
-
-<<"DEMO"
-# no output
-exe sleep 2
-unset j
-
-# output: hello world hello world
-exe echo "hello world" "hello" "world"
-unset j
-
-# output: error message
-exe "#show me an error" now
-DEMO
