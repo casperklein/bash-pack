@@ -4,7 +4,7 @@
 APP=${0##*/}
 
 # Uncomment to enable command logging to file
-#LOG="/tmp/$APP.history"
+LOG="/tmp/$APP.history"
 
 (tty -s) && {
 	RED=$(tput setaf 1)
@@ -34,8 +34,8 @@ exe() {
 	# build $CMD with quoted command and arguments
 	# build script
 	for i in "$@"; do
-			# escape bash operators & buildins
-			if [ "$i" == '|' ] || [ "$i" == '<' ] || [ "$i" == '>' ] || [ "$i" == ';' ] || [ "$i" == '||' ] || [ "$i" == '&&' ] || [ "$i" == 'time' ]; then
+			# escape bash operators & build-ins
+			if [ "$i" == '|' ] || [ "$i" == '<' ] || [ "$i" == '>' ] || [ "$i" == ';' ] || [ "$i" == '||' ] || [ "$i" == '<<' ] || [ "$i" == '>>' ] || [ "$i" == '&&' ] || [ "$i" == 'time' ]; then
 				CMD=$CMD" $i"
 				echo -n " $i" >> "$SCRIPT"
 			else
@@ -48,7 +48,8 @@ exe() {
 	done
 	CMD=${CMD# }
 	chmod u+x "$SCRIPT"
-
+cat $SCRIPT
+echo
 	# Logging
 	if [ -n "$LOG" ]; then
 		echo -ne $(date "+%F %T")"\t" >> "$LOG"
