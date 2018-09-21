@@ -48,8 +48,7 @@ exe() {
 	done
 	CMD=${CMD# }
 	chmod u+x "$SCRIPT"
-cat $SCRIPT
-echo
+
 	# Logging
 	if [ -n "$LOG" ]; then
 		echo -ne $(date "+%F %T")"\t" >> "$LOG"
