@@ -30,7 +30,7 @@ checkBinarys() {
 	#http://stackoverflow.com/a/677212/568737
 	BINS=("$@")
 	for BIN in "${BINS[@]}"; do
-		hash $BIN 2>/dev/null || {
+		hash "$BIN" 2>/dev/null || {
 			echo -e "Error: Binary '$BIN' is missing.\n" >&2
 			exit 1
 		}
@@ -40,11 +40,11 @@ checkBinarys() {
 # Check if all needed binarys are present
 checkBinarys "openssl" "pv"
 
-if [ ! $ENCKEY ]; then
-	read -s -p "Enter password: " ENCKEY
+if [ -z "$ENCKEY" ]; then
+	read -r -s -p "Enter password: " ENCKEY
 	echo
-	[ ! $ENCKEY ] && exit 1
-	read -s -p "Repeat password: " ENCKEY2
+	[ -z "$ENCKEY" ] && exit 1
+	read -r -s -p "Repeat password: " ENCKEY2
 	echo
 	if [ "$ENCKEY" != "$ENCKEY2" ]; then
 		echo -e "Error. Passwords not matching.\n" >&2
@@ -58,7 +58,7 @@ if [ "$2" == "-" ]; then
 		# no FIFO
 		# Encrypt & Upload
 		openssl "$CIPHER" -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
-		pv -bper -s $(( ($(stat -c%s "$1") + $BLOCKSIZE) / $BLOCKSIZE * $BLOCKSIZE + $BLOCKSIZE)) 
+		pv -bper -s $(( ($(stat -c%s "$1") + BLOCKSIZE) / BLOCKSIZE * BLOCKSIZE + BLOCKSIZE)) 
 	else
 		# FIFO
 		openssl "$CIPHER" -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
@@ -72,7 +72,7 @@ else
 		# no FIFO
 		# Encrypt & Upload
 		openssl "$CIPHER" -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
-		pv -bper -s $(( ($(stat -c%s "$1") + $BLOCKSIZE) / $BLOCKSIZE * $BLOCKSIZE + $BLOCKSIZE)) > "$2"
+		pv -bper -s $(( ($(stat -c%s "$1") + BLOCKSIZE) / BLOCKSIZE * BLOCKSIZE + BLOCKSIZE)) > "$2"
 	else
 		# FIFO
 		openssl "$CIPHER" -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |

@@ -4,10 +4,10 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 
 # running as root?
 if [ "$(id -u)" == "0" ]; then
-	$SCRIPTS/install.sh repair &&
+	"$SCRIPTS"/install.sh repair &&
 	echo &&
 	echo &&
-	cd $SCRIPTS &&
+	cd "$SCRIPTS" &&
 	echo "Wiping local changes.." &&
 	echo &&
 	git fetch &&

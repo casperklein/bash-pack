@@ -4,14 +4,14 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 
 # running as root?
 if [ "$(id -u)" == "0" ]; then
-	cd $SCRIPTS &&
+	cd "$SCRIPTS" &&
 	git fetch &> /dev/null || {
 		echo "Error: 'git fetch' failed." >&2
 		echo >&2
 		exit 1
 	}
-	DIFF=$(PAGER=cat git log HEAD..origin)
-	if [ ! -z "$DIFF" ]; then
+	DIFF=$(PAGER="cat" git log HEAD..origin)
+	if [ -n "$DIFF" ]; then
 	       	echo "Commits to pull:"
 		echo
 		echo "$DIFF"
