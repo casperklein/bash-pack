@@ -61,6 +61,7 @@ alias locateu='updatedb && locate -i'
 alias loop='while :; do'
 alias mkcd="source \"$SCRIPTS\"/mkcd"
 alias mounti='mount | column -t | grep -P '\''.*?on\s+/\s+.*|$'\'
+alias mtr='mtr -o LSD'
 alias mysqlctl='/etc/init.d/mysql'
 alias pgrep='pgrep -x'
 alias phpcheck='find -name '\''*.php'\'' -exec php -l {} \;'
