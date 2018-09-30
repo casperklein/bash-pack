@@ -7,9 +7,7 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 
 if [ $ROOT ]; then
 	apt-get update &&
-	apt-get install aptitude bash-completion bc boxes bsdmainutils ccze checkinstall colordiff colormake coreutils curl dnsutils dos2unix findutils git htop lynx mlocate moreutils most mtr-tiny net-tools openssl procps psmisc pv tar tcpdump tcpflow traceroute tree unzip vim wget
-	# called from repair.sh?
-	[ $# -gt 0 ] && exit 
+	apt-get install $(<"$SCRIPTS"/packages)
 fi
 echo
 
