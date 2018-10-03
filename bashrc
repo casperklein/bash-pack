@@ -90,12 +90,6 @@ alias md5sum='low md5sum'
 alias sha1sum='low sha1sum'
 alias sha256sum='low sha256sum'
 
-# Fix display bug when PuTTY is in UTF-8 translation mode
-#alias iptraf='echo iptraf is inaccurate. Use nethogs instead.; [ $TERM == "screen" ] && iptraf -d eth0 || TERM=linux iptraf -d eth0'
-alias iptraf='echo -e "\e[1;32miptraf is inaccurate. Staring iptraf-ng instead..\e[0m"; iptraf-ng'
-alias iptraf-ng='[ $TERM == "screen" ] && iptraf-ng -d eth0 || TERM=linux iptraf-ng -d eth0'
-alias htop='[[ $TERM == xterm* ]] && low htop || TERM=screen-256color low htop'
-
 # Some more alias to avoid making mistakes:
 alias rm='low rm -i'
 alias cp='low cp -i'
