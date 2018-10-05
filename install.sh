@@ -5,9 +5,11 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 # running as root?
 [ "$(id -u)" == "0" ] && ROOT=true
 
+[ "$1" == "-y" ] && YES=-y
+
 if [ $ROOT ]; then
 	apt-get update &&
-	apt-get install $(<"$SCRIPTS"/packages)
+	apt-get $YES install $(<"$SCRIPTS"/packages)
 fi
 echo
 
