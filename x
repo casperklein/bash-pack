@@ -12,14 +12,14 @@ if [ -f "$1" ]; then
 	case "$1" in
 		(*.7z) 7za x "$1" ;;
 		(*.ace) unace e "$1" ;;
+		(*.tar.bz2) bzip2 -v -d "$1" ;;
 		(*.bz2) bzip2 -d "$1" ;;
 		(*.deb) ar -x "$1" ;;
+		(*.tar.gz) tar -xvzf "$1" ;;
 		(*.gz) gunzip -d "$1" ;;
 		(*.lzh) lha x "$1" ;;
 		(*.rar) unrar x "$1" ;;
 		(*.shar) sh "$1" ;;
-		(*.tar.bz2) bzip2 -v -d "$1" ;;
-		(*.tar.gz) tar -xvzf "$1" ;;
 		(*.tar) tar -xvf "$1" ;;
 		(*.tbz2) tar -jxvf "$1" ;;
 		(*.tgz) tar -xvzf "$1" ;;
