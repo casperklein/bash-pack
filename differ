@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Modifies output of "diff -qr" for files that differ for easy inspection
+# Original: Files a/a and b/a differ
+# Modified: diff "a/a" "b/a"
+
+# STDIN
+cat	|
+sed	\
+	-e 's/^Files /diff "/'	\
+	-e 's/ and /" "/'	\
+	-e 's/ differ\x1b\[0;0m/"/'	# allow usage of colordiff
+#	-e 's/differ$/"/'		# use \diff, if 'diff' is aliased to 'colordiff'
