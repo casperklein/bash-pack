@@ -80,7 +80,7 @@ alias vidir='vidir -v'
 alias visudo='VISUAL=vi visudo'
 alias wget='wget -U "$ua"'
 # remove ?querystring appended to filename by wget
-alias wgetRemoveQuery='for i in $(find -maxdepth 1 -type f -name '\''*\?'\''); do echo "Old: $i"; echo "$(echo New: $i | cut -d? -f1)"; echo; read -p '\''Rename? [y/N] '\'' LINE; [ "$LINE" == "y" ] && mv "$i" "$(echo $i | cut -d? -f1)"; done'
+alias wgetRemoveQuery='for i in $(find -maxdepth 1 -type f -name '\''*\?*'\''); do echo "Old: $i"; echo "$(echo New: $i | cut -d? -f1)"; echo; read -p '\''Rename? [y/N] '\'' LINE; [ "$LINE" == "y" ] && mv "$i" "$(echo $i | cut -d? -f1)"; done'
 alias curl='curl -A "$ua"'
 alias lynx='lynx -useragent "$ua"'
 
