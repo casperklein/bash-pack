@@ -42,6 +42,7 @@ alias clock='watch -n 1 "date +%T"'
 alias croncal='croncal.pl -f /etc/crontab -d 900'
 alias ct='vi /etc/crontab'
 alias da='awk '\''{print NR": "$0; for(i=1;i<=NF;++i)print "\t"i": "$i}'\'''
+alias dd='dd status=progress'
 # Show ext 2, 3 & 4 FS; human readable; sort by 'use%' then 'avail'; highligt root fs
 alias df='echo -e "Filesystem Size Used Avail Use% Mountpoint\n$(\df -hP | tail -n+2 | sort -k5nr -k4n )" | column -t | grep -P '\''.+/$|$'\''; echo'
 alias encrypt='low openssl aes-256-cbc -e -salt -md sha256' # when nothing is supplied, openssl defaults are: -e -salt -md md5
