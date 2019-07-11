@@ -41,6 +41,7 @@ alias cls='clear'
 alias clock='watch -n 1 "date +%T"'
 alias croncal='croncal.pl -f /etc/crontab -d 900'
 alias ct='vi /etc/crontab'
+alias copy='low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive'
 alias da='awk '\''{print NR": "$0; for(i=1;i<=NF;++i)print "\t"i": "$i}'\'''
 alias dd='dd status=progress'
 # Show ext 2, 3 & 4 FS; human readable; sort by 'use%' then 'avail'; highligt root fs
