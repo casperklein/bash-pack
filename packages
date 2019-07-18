@@ -26,6 +26,7 @@ openssl
 procps
 psmisc
 pv
+rsync
 tar
 tcpdump
 tcpflow
