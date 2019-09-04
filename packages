@@ -16,6 +16,7 @@ findutils
 git
 haveged
 htop
+iputils-ping
 lynx
 mlocate
 moreutils
