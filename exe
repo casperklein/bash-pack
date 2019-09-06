@@ -51,9 +51,11 @@ exe() {
 
 	# Logging
 	if [ -n "$LOG" ]; then
-		echo -ne $(date "+%F %T")"\t" >> "$LOG"
-		tail -1 "$SCRIPT" >> "$LOG"
-		echo >> "$LOG"
+		{
+			echo -ne "$(date "+%F %T")\t"
+			tail -1 "$SCRIPT"
+			echo
+		} >> "$LOG"
 	fi
 
 	# in progress
