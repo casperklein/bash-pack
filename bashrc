@@ -117,6 +117,17 @@ a2dissite() { a2 dissite "$@"; }
 a2enmod()   { a2 enmod "$@";   }
 a2dismod()  { a2 dismod "$@";  }
 
+# git clone shortcut
+gc() {
+        if [[ "$1" != "https://github.com/"* ]]; then
+                local URL="https://github.com/$1"
+        else
+                local URL="$1"
+        fi
+        local DIR=$(basename "$1")
+        git clone "$URL" "$DIR" && cd "$DIR"
+}
+
 # Writes bash history immediately;  Useful for concurrent user log ins
 # Applies only on interactive shells
 shopt -s histappend
