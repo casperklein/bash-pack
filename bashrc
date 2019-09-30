@@ -23,7 +23,7 @@ eval "`dircolors`"
 alias ls='ls $LS_OPTIONS'
 alias ll='LC_COLLATE=C ls $LS_OPTIONS -Ahl' # https://unix.stackexchange.com/a/39853/45235
 alias l='ls $LS_OPTIONS -Ahl'
-alias diff='colordiff'
+alias diff='colordiff --width=$COLUMNS -y'
 #alias tail='colortail -q'
 alias configure='./configure | ccze -A'
 alias make='low colormake'
