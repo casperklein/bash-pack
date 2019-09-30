@@ -25,7 +25,7 @@ alias ll='LC_COLLATE=C ls $LS_OPTIONS -Ahl' # https://unix.stackexchange.com/a/3
 alias l='ls $LS_OPTIONS -Ahl'
 #alias diff='colordiff --width=$COLUMNS -y'
 # call '(color)diff' only, if the two files differ. otherwise 'diff -y' will output the whole files, no matter if they differ.
-diff() { command diff "$@" || colordiff --width=$COLUMNS -y "$@" }
+diff() { command diff "$@" || colordiff --width=$COLUMNS -y "$@"; }
 #alias tail='colortail -q'
 alias configure='./configure | ccze -A'
 alias make='low colormake'
