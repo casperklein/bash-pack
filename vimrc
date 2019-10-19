@@ -51,6 +51,10 @@ set mouse=a		" Enable mouse usage (all modes)
 :command! -range=% -nargs=0 T execute '<line1>,<line2>s#^\t\+#\=repeat(" ", len(submatch(0))*' . &ts . ')'
 :command! -range=% -nargs=0 S execute '<line1>,<line2>s#^\( \{'.&ts.'\}\)\+#\=repeat("\t", len(submatch(0))/' . &ts . ')'
 
+" Comment / Uncomment
+:command! -range=% -nargs=0 C execute '<line1>,<line2>s/^/#/'
+:command! -range=% -nargs=0 V execute '<line1>,<line2>s/^#//'
+
 " toggle between 'set paste' & 'set nopaste'
 set pastetoggle=<F8>
 
