@@ -102,7 +102,7 @@ alias reboot='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y"
 alias poweroff='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y" ] && poweroff'
 
 # Docker aliase
-hash docker && source docker-aliase.sh
+hash docker 2> /dev/null && source docker-aliase.sh
 
 # Apache stuff
 alias ac='exe apachectl configtest'
