@@ -101,6 +101,9 @@ alias mv='low mv -i'
 alias reboot='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y" ] && reboot'
 alias poweroff='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y" ] && poweroff'
 
+# Docker aliase
+hash docker && source docker-aliase.sh
+
 # Apache stuff
 alias ac='exe apachectl configtest'
 alias ar='exe apachectl configtest && exe service apache2 restart'
