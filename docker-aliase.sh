@@ -13,6 +13,7 @@ alias dv='docker volume ls'
 
 # docker apps
 alias hadolint='docker run --rm -i -v "$(pwd)"/Dockerfile:/Dockerfile:ro hadolint/hadolint /bin/hadolint --ignore DL3008 /Dockerfile'
+alias portainer='dr -p 9000:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer'
 
 dockerignore() {
 	#echo "# Exclude all"
