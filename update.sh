@@ -6,17 +6,17 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 if [ "$(id -u)" -eq 0 ]; then
 	cd "$SCRIPTS" &&
 	git fetch &> /dev/null || {
-		echo "Error: 'git fetch' failed." >&2
-		echo >&2
+		echo "Error: 'git fetch' failed."
+		echo
 		exit 1
-	}
+	} >&2
 	DIFF=$(PAGER="cat" git log HEAD..origin)
 	if [ -n "$DIFF" ]; then
 	       	echo "Commits to pull:"
 		echo
 		echo "$DIFF"
 		echo
-		read -p "Press ENTER to continue.."
+		read -r -p "Press ENTER to continue.."
 		echo
 	fi
 	git pull
