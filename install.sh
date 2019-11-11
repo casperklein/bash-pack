@@ -47,17 +47,15 @@ echo
 if [ ! -f ~/.inputrc ]; then
 	echo -n 'Creating symlink '
 	ln -sv "$SCRIPTS"/inputrc ~/.inputrc
+	echo
 fi
-
-echo
 
 # bash_completion
 if [ ! -f ~/.bash_completion ]; then
 	echo -n 'Creating symlink '
 	ln -sv "$SCRIPTS"/bash_completion ~/.bash_completion
+	echo
 fi
-
-echo
 
 # vimrc
 if [ $ROOT ]; then
