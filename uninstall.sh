@@ -23,6 +23,14 @@ else
 	echo 'Error:' ~/.inputrc 'not found.' >&2
 fi
 
+# inputrc
+if [ "$(readlink -f ~/.bash_completion)" == "$DIR/bash_completion" ]; then
+	echo 'Removing symlink' ~/.bash_completion "-> $DIR/bash_completion"
+	rm ~/.bash_completion
+else
+	echo 'Error:' ~/.bash_completion 'not found.' >&2
+fi
+
 # vimrc
 if [ $ROOT ]; then
 	if [ "$(readlink -f /etc/vim/vimrc)" == "$DIR/vimrc" ]; then

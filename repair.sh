@@ -12,12 +12,13 @@ if [ "$(id -u)" == "0" ]; then
 	echo &&
 	git status
 	echo
-	if aptitude -s -y install $(<"$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
-		echo "Installing missing packages.."
-		echo
-		aptitude update
-		aptitude install $(<"$SCRIPTS"/packages)
-	fi
+	"$SCRIPTS"/install.sh
+#	if aptitude -s -y install $(<"$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
+#		echo "Installing missing packages.."
+#		echo
+#		aptitude update
+#		aptitude install $(<"$SCRIPTS"/packages)
+#	fi
 else
 	echo "Error: You must be root to run $0" >&2
 	echo >&2

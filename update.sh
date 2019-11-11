@@ -21,12 +21,13 @@ if [ "$(id -u)" -eq 0 ]; then
 	fi
 	git pull
 	echo
-	if aptitude -s -y install $(<"$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
-		echo "Installing new packages.."
-		echo
-		aptitude update
-		aptitude install $(<"$SCRIPTS"/packages)
-	fi
+	"$SCRIPTS"/install.sh
+#	if aptitude -s -y install $(<"$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
+#		echo "Installing new packages.."
+#		echo
+#		aptitude update
+#		aptitude install $(<"$SCRIPTS"/packages)
+#	fi
 else
 	echo "Error: You must be root to run $0" >&2
 	echo >&2
