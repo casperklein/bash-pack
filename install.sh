@@ -40,6 +40,14 @@ fi
 
 echo
 
+# bash_completion
+if [ ! -f ~/.bash_completion ]; then
+	echo -n 'Creating symlink '
+	ln -sv "$SCRIPTS"/bash_completion ~/.bash_completion
+fi
+
+echo
+
 # vimrc
 if [ $ROOT ]; then
 	if [ -f /etc/vim/vimrc ] && [ ! -f /etc/vim/vimrc.backup ]; then
