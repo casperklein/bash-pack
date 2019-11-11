@@ -3,8 +3,8 @@
 shopt -s checkwinsize
 
 # Prompt
-if [ ! -z "$PS1" ]; then # prevent WinSCP issues
-	if [ $(tput colors) -gt 0 ] ; then
+if [ -n "$PS1" ]; then # prevent WinSCP issues
+	if [ "$(tput colors)" -gt 0 ] ; then
 		RED=$(tput setaf 1)
 		GREEN=$(tput setaf 2)
 		CYAN=$(tput setaf 6)
