@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# or just use: ping -O
+
 # Requires: awk, bc, grep, sed, ping and bash of course ;)
 
 function statistic() {
