@@ -1,3 +1,5 @@
+#!/bin/bash
+
 alias db='docker build -t'
 alias dc='drm 2>/dev/null; drmi 2>/dev/null; docker volume prune -f; docker system prune -af; dv; rm -rf ~/.docker/manifests/'
 alias de='docker exec -it'

@@ -8,8 +8,19 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 [ "$1" == "-y" ] && YES=-y
 
 if [ $ROOT ]; then
-	apt-get update &&
-	apt-get $YES install $(<"$SCRIPTS"/packages)
+	if [ "$1" == "-u" ]; then
+		# update --> more silent
+		apt-get update > /dev/null &&
+		if aptitude -s -y install $(<"$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
+			echo "Installing new packages.."
+			echo
+			aptitude install $(<"$SCRIPTS"/packages)
+	        fi
+	else
+		# install
+		apt-get update &&
+		apt-get $YES install $(<"$SCRIPTS"/packages)
+	fi
 fi
 echo
 

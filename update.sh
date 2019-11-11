@@ -21,7 +21,7 @@ if [ "$(id -u)" -eq 0 ]; then
 	fi
 	git pull
 	echo
-	"$SCRIPTS"/install.sh
+	"$SCRIPTS"/install.sh -u
 #	if aptitude -s -y install $(<"$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
 #		echo "Installing new packages.."
 #		echo
