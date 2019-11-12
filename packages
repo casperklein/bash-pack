@@ -23,6 +23,7 @@ mlocate
 moreutils
 most
 mtr-tiny
+netcat-openbsd
 net-tools
 openssl
 procps
