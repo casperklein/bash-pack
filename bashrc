@@ -122,6 +122,9 @@ a2enmod()   { a2 enmod "$@";   }
 a2dismod()  { a2 dismod "$@";  }
 
 # git clone shortcut
+alias commit='git diff; git commit -a && git push'
+alias gs='git status'
+alias gd='git diff'
 gc() {
         if [[ "$1" != "https://github.com/"* ]]; then
                 local URL="https://github.com/$1"
