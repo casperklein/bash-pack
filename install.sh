@@ -71,3 +71,7 @@ fi
 
 echo 'Done.'
 echo
+aptitude search ~iunattended-upgrades &> /dev/null && {
+	echo "Warning: 'unattended-upgrades' package is installed!"
+	echo
+} >&2
