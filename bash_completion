@@ -484,3 +484,5 @@ complete -F _complete_alias dl
 complete -F _complete_alias dr
 complete -F _complete_alias de
 complete -F _complete_alias db
+
+complete -F _complete_alias tailf
