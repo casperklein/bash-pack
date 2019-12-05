@@ -28,7 +28,7 @@ alias diffv='colordiff --width=$COLUMNS -y'
 #alias tail='colortail -q'
 alias configure='./configure | ccze -A'
 #alias make='low colormake' # https://github.com/pagekite/Colormake/issues/21 --> 'docker push' progress is suppressed
-alias checkinstall='checkinstall colormake install'
+#alias checkinstall='checkinstall colormake install'
 #export GREP_OPTIONS='--color=auto' #deprecated
 alias grep='grep --color=auto'
 alias highlight='ccze -CA'
