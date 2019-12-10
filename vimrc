@@ -46,6 +46,10 @@ set incsearch		" Incremental search
 "set hidden             " Hide buffers when they are abandoned
 set mouse=a		" Enable mouse usage (all modes)
 
+" :help listchars
+" set characters for 'set list'
+set listchars=tab:>-,trail:~,space:.
+
 " Tab2Space
 " Space2Tab
 :command! -range=% -nargs=0 T execute '<line1>,<line2>s#^\t\+#\=repeat(" ", len(submatch(0))*' . &ts . ')'
