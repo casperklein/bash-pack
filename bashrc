@@ -126,13 +126,17 @@ alias commit='git diff; git commit -a && git push'
 alias gs='git status'
 alias gd='git diff'
 gc() {
-        if [[ "$1" != "https://github.com/"* ]]; then
-                local URL="https://github.com/$1"
-        else
-                local URL="$1"
-        fi
-        local DIR=$(basename "$1")
-        git clone "$URL" "$DIR" && cd "$DIR"
+	if [[ "$1" != "https://github.com/"* ]]; then
+		if [[ "$1" == *"/"* ]]; then
+			local URL="https://github.com/$1"
+		else
+			local URL="https://github.com/casperklein/$1"
+		fi
+	else
+		local URL="$1"
+	fi
+	local DIR=$(basename "$1")
+	git clone "$URL" "$DIR" && cd "$DIR"
 }
 
 # Writes bash history immediately;  Useful for concurrent user log ins
@@ -187,8 +191,8 @@ delay() {
 
 # if WSL, then create lowercase aliases for windows executables in Windows\System32 directory
 if [ -d /mnt/c/Windows/System32 ]; then
-        PATH=$PATH:/mnt/c/Windows/System32/
-        for i in $(find /mnt/c/Windows/System32 -maxdepth 1 -type f -name '*\.EXE'); do BASENAME=${i##*/}; alias ${BASENAME,,}=\'$BASENAME\' ; done
+	PATH=$PATH:/mnt/c/Windows/System32/
+	for i in $(find /mnt/c/Windows/System32 -maxdepth 1 -type f -name '*\.EXE'); do BASENAME=${i##*/}; alias ${BASENAME,,}=\'$BASENAME\' ; done
 	# empty 'low' alias, to avoid ionice error: ioprio_set failed: Invalid argument
 	alias low=''
 fi
