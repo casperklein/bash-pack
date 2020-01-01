@@ -1,10 +1,14 @@
 # all targets are phony (no files to check)
 .PHONY: default copy-conf install
 
-default: instal
+default: install copy-conf
 
 copy-conf:
-	cp tmux.conf /etc
+	@echo "Copy config to: /etc/tmux.conf"
+	@cp tmux.conf /etc
+	@echo
 
 install:
-	dpkg -i tmux*.deb
+	@echo "Install tmux package.."
+	@dpkg -i tmux*.deb
+	@echo
