@@ -11,7 +11,7 @@ export ua='Mozilla/5.0 (Windows NT 5.1; rv:23.0) Gecko/20100101 Firefox/23.0'
 # Prompt
 source "$SCRIPTS"/bash-prompt
 source "$SCRIPTS"/apt-completion
-source "$SCRIPTS"/tmux-completion
+source "$SCRIPTS"/tmux/tmux-completion
 source /usr/share/bash-completion/bash_completion
 
 # Color my life
