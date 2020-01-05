@@ -89,9 +89,8 @@ alias curl='curl -A "$ua"'
 alias lynx='lynx -useragent "$ua"'
 
 # trash
-alias trash='trash.sh'
-alias et='trash-empty.sh'
-alias ets='trash-empty-shred.sh'
+alias et='trash-empty'
+alias ets='trash-empty-shred'
 
 # Lower process priority
 alias low='nice -n 20 ionice -c3'
