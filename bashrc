@@ -89,8 +89,13 @@ alias curl='curl -A "$ua"'
 alias lynx='lynx -useragent "$ua"'
 
 # trash
-alias et='trash-empty'
-alias ets='trash-empty-shred'
+export trash=/trash
+export TRASHDIR=/trash
+alias et='mkdir -p "$TRASHDIR";  trash-empty zip rar flv mkv nfo sha1 jpg jpeg png gif'	# shred some
+alias ets='mkdir -p "$TRASHDIR"; trash-empty --shred'					# shred all
+alias etn='mkdir -p "$TRASHDIR"; trash-empty'						# shred none
+alias ts='mkdir -p "$TRASHDIR";  du -sh $trash'
+alias tt='mkdir -p "$TRASHDIR";  tree $trash'
 
 # Lower process priority
 alias low='nice -n 20 ionice -c3'
