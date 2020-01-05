@@ -88,6 +88,11 @@ alias wgetRemoveQuery='for i in $(find -maxdepth 1 -type f -name '\''*\?*'\''); 
 alias curl='curl -A "$ua"'
 alias lynx='lynx -useragent "$ua"'
 
+# trash
+alias trash='trash.sh'
+alias et='trash-empty.sh'
+alias ets='trash-empty-shred.sh'
+
 # Lower process priority
 alias low='nice -n 20 ionice -c3'
 alias md5sum='low md5sum'
