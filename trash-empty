@@ -15,7 +15,9 @@ checkBinarys() {
 	done
 }
 
-checkBinarys "find" "shred" "rm"
+BINS=("rm")
+[ $# -gt 0 ] && BINS+=("find" "shred")
+checkBinarys "${BINS[@]}"
 
 # shred files?
 if [ $# -eq 1 ] && [ "$1" == '--shred' ]; then
