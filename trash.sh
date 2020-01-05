@@ -28,22 +28,20 @@ checkBinarys() {
 	done
 }
 
-if [ $# -eq 0 ]; then
-	{
-		echo "$APP $VER"
-	        echo
-		echo "Syntax: $APP <directory/file> [<another directory/file>]"
-	        echo
-	} >&2
+[ $# -eq 0 ] && {
+	echo "$APP $VER"
+	echo
+	echo "Syntax: $APP <directory/file> [<another directory/file>]"
+	echo
 	exit 1
-fi
+} >&2
 
 checkBinarys "basename" "mkdir" "mv" "stat"
 
 mkdir -p "$TRASHDIR" 2> /dev/null || {
-		echo "Error: Failed to create directory '$TRASHDIR'."
-		echo
-		exit 1
+	echo "Error: Failed to create directory '$TRASHDIR'."
+	echo
+	exit 1
 } >&2
 
 FAIL=0
@@ -67,7 +65,7 @@ for i in "$@"; do
 		echo "Error: Failed to create directory '$TRASHDIR'."
 		echo
 		exit 1
-	}
+	} >&2
 
 	# If target exist, find an alternate name
 	if [ -e "$TRASHDIR/$TODAY/$NAME" ] || [ -h "$TRASHDIR/$TODAY/$NAME" ]; then
@@ -76,17 +74,17 @@ for i in "$@"; do
 			((++j))
 			if [ ! -e "$TRASHDIR/$TODAY/$NAME.$j" ] && [ ! -h "$TRASHDIR/$TODAY/$NAME.$j" ]; then
 				mv "$i" "$TRASHDIR/$TODAY/$NAME.$j" || {
-					echo "Error: Could not move '$i'" >&2
+					echo "Error: Could not move '$i'"
 					FAIL=1
-				}
+				} >&2
 				break
 			fi
 		done
 	else
 		mv "$i" "$TRASHDIR/$TODAY/$NAME" || {
-			echo "Error: Could not move '$i'" >&2
+			echo "Error: Could not move '$i'"
 			FAIL=1
-		}
+		} >&2
 	fi
 done
 
