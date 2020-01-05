@@ -57,8 +57,8 @@ for i in "$@"; do
 		continue
 	fi
 
-	# basename
-	NAME=${i##*/}
+	# basename of file or directory
+	NAME=$(basename "$i")
 
 	# Create target directory
 	mkdir -p -m 700 "$TRASHDIR/$TODAY" 2> /dev/null || {
