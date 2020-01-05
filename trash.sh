@@ -62,7 +62,7 @@ for i in "$@"; do
 
 	# Create target directory
 	mkdir -p -m 700 "$TRASHDIR/$TODAY" 2> /dev/null || {
-		echo "Error: Failed to create directory '$TRASHDIR'."
+		echo "Error: Failed to create directory '$TRASHDIR/$TODAY'."
 		echo
 		exit 1
 	} >&2
@@ -74,7 +74,7 @@ for i in "$@"; do
 			((++j))
 			if [ ! -e "$TRASHDIR/$TODAY/$NAME.$j" ] && [ ! -h "$TRASHDIR/$TODAY/$NAME.$j" ]; then
 				mv "$i" "$TRASHDIR/$TODAY/$NAME.$j" || {
-					echo "Error: Could not move '$i'"
+					echo "Error: Failed to move '$i' --> '$TRASHDIR/$TODAY/$NAME.$j'"
 					FAIL=1
 				} >&2
 				break
@@ -82,7 +82,7 @@ for i in "$@"; do
 		done
 	else
 		mv "$i" "$TRASHDIR/$TODAY/$NAME" || {
-			echo "Error: Could not move '$i'"
+			echo "Error: Failed move '$i' --> '$TRASHDIR/$TODAY/$NAME'"
 			FAIL=1
 		} >&2
 	fi
