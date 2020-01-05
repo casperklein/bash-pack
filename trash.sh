@@ -13,9 +13,10 @@
 APP=${0##*/}
 VER=0.3
 
-[ -z "$TRASHDIR" ] && TRASHDIR=~/.trash
-
 set -ueo pipefail
+
+# set default directory if $TRASHDIR is not given
+TRASHDIR=${TRASHDIR:-~/.trash}
 
 checkBinarys() {
 	for i in "$@"; do
@@ -37,7 +38,8 @@ if [ $# -eq 0 ]; then
 	exit 1
 fi
 
-checkBinarys "mv" "stat" "mkdir"
+checkBinarys "basename" "mkdir" "mv" "stat"
+
 mkdir -p "$TRASHDIR" 2> /dev/null || {
 		echo "Error: Failed to create directory '$TRASHDIR'."
 		echo

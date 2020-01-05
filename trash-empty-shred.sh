@@ -1,8 +1,9 @@
 #!/bin/bash
 
-[ -z "$TRASHDIR" ] && TRASHDIR=~/.trash
-
 set -ueo pipefail
+
+# set default directory if $TRASHDIR is not given
+TRASHDIR=${TRASHDIR:-~/.trash}
 
 checkBinarys() {
 	for i in "$@"; do
