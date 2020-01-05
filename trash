@@ -3,15 +3,15 @@
 # trash
 # A script similar to the recycle bin feature on windows platforms.
 # It moves files/directorys to a defined directory instead of removing them from the filesystem.
-# If you really want to get rid of them, you can use the trash-empty.sh or trash-empty-shred.sh command.
+# If you really want to get rid of them, you can use the trash-empty command.
 
-# Version:  0.3
-# Build:    2020-01-04
+# Version:  0.31
+# Build:    2020-01-05
 # Author:   Heiko Barth
 # Licence:  Beer-Ware (See: http://en.wikipedia.org/wiki/Beerware)
 
 APP=${0##*/}
-VER=0.3
+VER=0.31
 
 set -ueo pipefail
 
@@ -31,8 +31,17 @@ checkBinarys() {
 [ $# -eq 0 ] && {
 	echo "$APP $VER"
 	echo
+	echo "A script similar to the recycle bin feature on windows platforms."
+	echo "It moves files/directorys to a defined directory instead of removing them from the filesystem."
+	echo "If you really want to get rid of them, you can use the trash-empty command."
+	echo
 	echo "Syntax: $APP <directory/file> [<another directory/file>]"
 	echo
+	echo "Syntax: $APP-empty [options]"
+	echo
+	echo "Empty trash:                                 $APP-empty"
+	echo "Empty trash, shred some file types before:   $APP-empty zip rar"
+	echo "Empty trash, shred all files before:         $APP-empty --shred"
 	exit 1
 } >&2
 
