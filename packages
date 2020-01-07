@@ -18,6 +18,7 @@ git
 haveged
 htop
 iputils-ping
+lsof
 lynx
 mlocate
 moreutils
