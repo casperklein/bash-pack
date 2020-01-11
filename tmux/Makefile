@@ -10,5 +10,6 @@ copy-conf:
 
 install:
 	@echo "Install tmux package.."
-	@dpkg -i tmux*.deb
+	@MASCHINE=$$(uname -m) ; [ "$$MASCHINE" == "x86_64" ] && ARCH=amd64 || [ "$MASCHINE" == "aarch64" ] && ARCH=arm64 || ARCH="armhf" \
+	dpkg -i tmux*$$ARCH.deb
 	@echo
