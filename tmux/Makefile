@@ -1,6 +1,14 @@
 # all targets are phony (no files to check)
 .PHONY: default copy-conf install
 
+SHELL = /bin/bash
+
+ARCH := $(shell MASCHINE=$$(uname -m); \
+	[ "$$MASCHINE" == "ix86_64" ] && echo "amd64" || { \
+		[ "$$MASCHINE" == "aarch64" ] && echo "arm64" || \
+			echo "armhf"; \
+	})
+
 default: install copy-conf
 
 copy-conf:
@@ -10,6 +18,5 @@ copy-conf:
 
 install:
 	@echo "Install tmux package.."
-	@MASCHINE=$$(uname -m) ; [ "$$MASCHINE" == "x86_64" ] && ARCH=amd64 || [ "$MASCHINE" == "aarch64" ] && ARCH=arm64 || ARCH="armhf" \
-	dpkg -i tmux*$$ARCH.deb
+	@dpkg -i tmux*$(ARCH).deb
 	@echo
