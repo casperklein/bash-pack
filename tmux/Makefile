@@ -4,19 +4,19 @@
 SHELL = /bin/bash
 
 ARCH := $(shell MASCHINE=$$(uname -m); \
-	[ "$$MASCHINE" == "ix86_64" ] && echo "amd64" || { \
+	[ "$$MASCHINE" == "x86_64" ] && echo "amd64" || { \
 		[ "$$MASCHINE" == "aarch64" ] && echo "arm64" || \
 			echo "armhf"; \
 	})
 
-default: install copy-conf
-
-copy-conf:
-	@echo "Copy config to: /etc/tmux.conf"
-	@cp tmux.conf /etc
-	@echo
+default: install
 
 install:
 	@echo "Install tmux package.."
 	@dpkg -i tmux*$(ARCH).deb
+	@echo
+
+copy-conf:
+	@echo "Copy config to: /etc/tmux.conf"
+	@cp tmux.conf /etc
 	@echo
