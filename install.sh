@@ -1,14 +1,16 @@
 #!/bin/bash
 
+set -ueo pipefail
+
 SCRIPTS=$(dirname "$(readlink -f "$0")")
 
 # running as root?
-[ "$(id -u)" == "0" ] && ROOT=true
+[ "$(id -u)" == "0" ] && ROOT=true || ROOT=false
 
-[ "$1" == "-y" ] && YES=-y
+[ "${1:-}" == "-y" ] && YES=-y || YES=
 
-if [ $ROOT ]; then
-	if [ "$1" == "-u" ]; then
+if [ "$ROOT" = true ]; then
+	if [ "${1:-}" == "-u" ]; then
 		# update --> more silent
 		apt-get update > /dev/null &&
 		if aptitude -s -y install $(<"$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
@@ -58,7 +60,7 @@ if [ ! -f ~/.bash_completion ]; then
 fi
 
 # vimrc
-if [ $ROOT ]; then
+if [ "$ROOT" = true ]; then
 	if [ -f /etc/vim/vimrc ] && [ ! -f /etc/vim/vimrc.backup ]; then
 		echo 'Moving            /etc/vim/vimrc -> /etc/vim/vimrc.backup'
 		mv /etc/vim/vimrc /etc/vim/vimrc.backup
