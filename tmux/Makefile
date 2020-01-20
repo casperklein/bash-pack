@@ -1,13 +1,18 @@
 # all targets are phony (no files to check)
 .PHONY: default install copy-conf
 
-SHELL = /bin/bash
+SHELL := /bin/bash
 
-ARCH := $(shell MASCHINE=$$(uname -m); \
-	[ "$$MASCHINE" == "x86_64" ] && echo "amd64" || { \
-		[ "$$MASCHINE" == "aarch64" ] && echo "arm64" || \
-			echo "armhf"; \
-	})
+ARCH := $(shell						\
+	MASCHINE=$$(uname -m);				\
+	if [ "$$MASCHINE" == "x86_64" ]; then		\
+		echo "amd64";				\
+	elif [ "$$MASCHINE" == "aarch64" ]; then	\
+		echo "arm64";				\
+	else						\
+		echo "armhf";				\
+	fi						\
+)
 
 default: install
 
