@@ -1,10 +1,11 @@
 # /etc/inputrc - global inputrc for libreadline
 # See readline(3readline) and `info rluserman' for more information.
 
+# Use 'cat' to get key codes
 # bashrc alternative: bind '"\e[12~":"top\n"'
-# F2
+
+# F2 + F4
 "\e[12~": "top\n"
-# F4
 "\e[14~": "tmux\n"
 
 # Disable echo ^C when hitting ctrl-c
