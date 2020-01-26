@@ -8,7 +8,7 @@ set echo-control-characters off
 set input-meta on
 set output-meta on
 
-# To allow the use of 8bit-characters like the german umlauts, comment out
+# To allow the use of 8bit-characters like the german umlauts, uncomment
 # the line below. However this makes the meta key not work as a meta key,
 # which is annoying to those which don't need to type in 8-bit characters.
 
