@@ -17,6 +17,7 @@ git
 haveged
 htop
 iputils-ping
+jq
 lsof
 lynx
 mlocate
