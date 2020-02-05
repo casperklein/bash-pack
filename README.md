@@ -16,3 +16,11 @@
 ## Uninstall
     $DESTINATION/uninstall.sh # (symlinks only)
     rm -rf $DESTINATION       # remove complete
+
+## Install tmux
+    cd $DESTINATION/tmux/
+    make install
+
+## Copy tmux configuration to /etc/tmux.conf
+    cd $DESTINATION/tmux/
+    make copy-conf

@@ -3,16 +3,20 @@
 
 SHELL := /bin/bash
 
-ARCH := $(shell						\
-	MASCHINE=$$(uname -m);				\
-	if [ "$$MASCHINE" == "x86_64" ]; then		\
-		echo "amd64";				\
-	elif [ "$$MASCHINE" == "aarch64" ]; then	\
-		echo "arm64";				\
-	else						\
-		echo "armhf";				\
-	fi						\
-)
+ARCH := ${shell			\
+	MASCHINE=$$(uname -m);	\
+	case "$$MASCHINE" in	\
+	x86_64)			\
+		echo "amd64"	\
+		;;		\
+	aarch64)		\
+		echo "arm64"	\
+		;;		\
+	*)			\
+		echo "armhf"	\
+		;;		\
+	esac			\
+}
 
 default: install
 
