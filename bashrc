@@ -18,7 +18,7 @@ source /usr/share/bash-completion/bash_completion
 export PAGER='most'
 export VISUAL='vi' # advanced terminal
 export EDITOR='vi' # nowadays not really needed anymore
-export LS_OPTIONS='--color=auto'
+export LS_OPTIONS='--color=auto -N' # -N https://www.gnu.org/software/coreutils/quotes.html ; https://unix.stackexchange.com/a/262162/45235
 eval "`dircolors`"
 alias ls='ls $LS_OPTIONS'
 alias ll='LC_COLLATE=C ls $LS_OPTIONS -Ahl' # https://unix.stackexchange.com/a/39853/45235
