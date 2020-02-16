@@ -148,6 +148,23 @@ gc() {
 	git clone "$URL" "$DIR" && cd "$DIR"
 }
 
+# make shell script
+msh() {
+	if [ -e "$1" ]; then
+		echo "Error: '$1' does already exist."
+		echo
+		return 1
+	fi >&2
+	cat > "$1" <<"EOF"
+#!/bin/bash
+
+
+EOF
+        chmod u+x "$1"
+        vi "$1"
+}
+
+
 # Writes bash history immediately;  Useful for concurrent user log ins
 # Applies only on interactive shells
 shopt -s histappend
