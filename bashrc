@@ -145,7 +145,7 @@ gc() {
 		local URL="$1"
 	fi
 	local DIR=$(basename "$1")
-	git clone "$URL" "$DIR" && cd "$DIR"
+	git clone --recurse-submodules "$URL" "$DIR" && cd "$DIR"
 }
 
 # make shell script
