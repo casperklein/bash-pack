@@ -1,7 +1,7 @@
 umask 022
 
 # Path stuff
-SCRIPTS=$(dirname "$(readlink -f "$BASH_SOURCE")")
+SCRIPTS=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
 export PATH=$PATH:$SCRIPTS
 syslog=/var/log/syslog
 
