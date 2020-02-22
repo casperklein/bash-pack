@@ -42,7 +42,6 @@ alias cls='clear'
 alias clock='watch -n 1 "date +%T"'
 alias croncal='croncal.pl -f /etc/crontab -d 900'
 alias ct='vi /etc/crontab'
-alias copy='low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive'
 alias da='awk '\''{print NR": "$0; for(i=1;i<=NF;++i)print "\t"i": "$i}'\'''
 alias dd='dd status=progress'
 # Show ext 2, 3 & 4 FS; human readable; sort by 'use%' then 'avail'; highligt root fs
@@ -87,6 +86,44 @@ alias wget='wget -U "$ua"'
 alias wgetRemoveQuery='for i in $(find -maxdepth 1 -type f -name '\''*\?*'\''); do echo "Old: $i"; echo "$(echo New: $i | cut -d? -f1)"; echo; read -p '\''Rename? [y/N] '\'' LINE; [ "$LINE" == "y" ] && mv "$i" "$(echo $i | cut -d? -f1)"; done'
 alias curl='curl -A "$ua"'
 alias lynx='lynx -useragent "$ua"'
+
+# copy with progress
+alias copy='low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive'
+copyfile() {
+	local dst line
+	if [ ! -f "$1" ]; then
+		echo "Error: File '$1' does not exist."
+		echo
+		return 1
+	fi >&2
+	dst="$2"
+	if [ -d "$dst" ]; then
+		dst="$dst/$(basename "$1")"
+	fi
+
+	if [ -f "$dst" ]; then
+		echo "File '$dst' already exist."
+		read -p "Overwrite? [y/N] " line
+		if [ "$line" == "y" ]; then
+			echo
+			pv -bper "$1" > "$dst"
+		else
+			echo
+			return 1
+		fi
+	else
+		piv -bper "$1" > "$dst"
+	fi
+	if [ ! $? -eq 0 ]; then
+		echo
+		return 1
+	fi
+	echo
+}
+movefile() {
+	copyfile "$1" "$2" &&
+	trash "$1"
+}
 
 # trash
 export trash=/trash
