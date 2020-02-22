@@ -222,7 +222,7 @@ HISTSIZE=500000
 # Reminder Function
 reminder() {
 	out=
-	while read line; do
+	while read -r line; do
 		if [ "$out" != "" ]; then
 			out="$out\n"$line
 		else
