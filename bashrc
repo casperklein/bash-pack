@@ -112,7 +112,7 @@ copyfile() {
 			return 1
 		fi
 	else
-		piv -bper "$1" > "$dst"
+		pv -bper "$1" > "$dst"
 	fi
 	if [ ! $? -eq 0 ]; then
 		echo
