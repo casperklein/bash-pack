@@ -199,6 +199,7 @@ gc() {
 
 # make shell script
 msh() {
+	[ $# -eq 0 ] && return 1
 	if [ -e "$1" ]; then
 		echo "Error: '$1' does already exist."
 		echo
