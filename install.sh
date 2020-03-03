@@ -23,7 +23,7 @@ if [ "$ROOT" = true ]; then
 		apt-get update &&
 		apt-get $YES install $(<"$SCRIPTS"/packages)
 	fi
-	if ! hash bat; then
+	if ! hash bat 2> /dev/null; then
 		# install bat package
 		MASCHINE=$(uname -m)
 		case "$MASCHINE" in
