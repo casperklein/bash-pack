@@ -208,6 +208,8 @@ msh() {
 	cat > "$1" <<"EOF"
 #!/bin/bash
 
+set -ueo pipefail
+
 
 EOF
         chmod u+x "$1"
