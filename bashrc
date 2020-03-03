@@ -87,6 +87,17 @@ alias wgetRemoveQuery='for i in $(find -maxdepth 1 -type f -name '\''*\?*'\''); 
 alias curl='curl -A "$ua"'
 alias lynx='lynx -useragent "$ua"'
 
+# use syntax highlighting on some conditions
+alias bat='bat --pager=never -p --theme TwoDark'
+cat() {
+	if [ $# -eq 1 ] && tty -s && [ -f "$1" ] && [ "$(stat -c%s "$1")" -le 1048576 ]; then
+		bat --pager=never -p --theme TwoDark "$1"
+	else
+		# via pipe
+		command cat "$@"
+	fi
+}
+
 # copy with progress
 alias copy='low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive'
 copyfile() {
@@ -140,7 +151,7 @@ alias md5sum='low md5sum'
 alias sha1sum='low sha1sum'
 alias sha256sum='low sha256sum'
 
-# Some more alias to avoid making mistakes:
+# Some more aliases to avoid making mistakes:
 alias rm='low rm -i'
 alias cp='low cp -i'
 alias mv='low mv -i'

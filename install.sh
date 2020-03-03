@@ -23,6 +23,20 @@ if [ "$ROOT" = true ]; then
 		apt-get update &&
 		apt-get $YES install $(<"$SCRIPTS"/packages)
 	fi
+	# install bat package
+	MASCHINE=$(uname -m)
+	case "$MASCHINE" in
+		x86_64)
+			ARCH="amd64"
+		       ;;
+		aarch64)
+			ARCH="arm64"
+			;;
+		*)
+			ARCH="armhf"
+			;;
+	esac
+	dpkg -i "$SCRIPTS"/bat/bat_*_$ARCH.deb
 fi
 echo
 
