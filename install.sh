@@ -23,7 +23,11 @@ if [ "$ROOT" = true ]; then
 		apt-get update &&
 		apt-get $YES install $(<"$SCRIPTS"/packages)
 	fi
-	if ! hash bat 2> /dev/null; then
+
+	# install bat if not installed or outdated
+	VERSION=$(dpkg-query -f='${Version}' --show bat 2>/dev/null || echo -n "0")
+	TARGET=0.13.0
+	if dpkg --compare-versions "$VERSION" "lt" "$TARGET"; then
 		# install bat package
 		MASCHINE=$(uname -m)
 		case "$MASCHINE" in
