@@ -26,7 +26,7 @@ if [ "$ROOT" = true ]; then
 
 	# install bat if not installed or outdated
 	VERSION=$(dpkg-query -f='${Version}' --show bat 2>/dev/null || echo -n "0")
-	TARGET=0.15.0
+	TARGET=0.15.1
 	if dpkg --compare-versions "$VERSION" "lt" "$TARGET"; then
 		# install bat package
 		MASCHINE=$(uname -m)
