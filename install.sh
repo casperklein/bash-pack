@@ -26,7 +26,7 @@ if [ "$ROOT" = true ]; then
 
 	# install bat if not installed or outdated
 	VERSION=$(dpkg-query -f='${Version}' --show bat 2>/dev/null || echo -n "0")
-	TARGET=$(ls "$SCRIPTS/bat_*_amd64.deb" | cut -d_ -f2)
+	TARGET=$(ls "$SCRIPTS/bat/bat_*_amd64.deb" | cut -d_ -f2)
 	if dpkg --compare-versions "$VERSION" "lt" "$TARGET"; then
 		# install bat package
 		MASCHINE=$(uname -m)
