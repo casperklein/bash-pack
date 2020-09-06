@@ -55,6 +55,7 @@ alias hexdump='hexdump -C'
 #alias httpheader='curl -s --compressed -D- -o /dev/null' # File is completely downloaded. Probably not good for large files..
 alias httpheader='timeout 2 curl -s --compressed -D- -o /dev/null' # Terminate after 2 seconds. That prevents downloading a large file :)
 alias insserv='insserv -v'
+alias ip='ip -c=auto'
 alias ipcalc='ipcalc -nb'
 alias jobs='jobs -l'
 alias killall='killall -v -e'
