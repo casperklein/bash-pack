@@ -1,34 +1,46 @@
 #!/bin/bash
 
-# Whats my name?
-APP=${0##*/}
+# SETUP --------------------------------------------------------------
 
 # Uncomment to enable command logging to file
 #LOG="/tmp/$APP.history"
 
-tty -s && {
-	RED=$(tput setaf 1)
-	GREEN=$(tput setaf 2)
-	YELLOW=$(tput setaf 3)
-	RESET=$(tput sgr0)
-	DELETE='\r\033[K'
-} ||	DELETE='\n'
+# --------------------------------------------------------------------
 
-cleanUp() {
-	[ -f "$SCRIPT" ] && {
+set -ueo pipefail
+
+# whats my name?
+APP=${0##*/}
+
+# no tty? no colors!
+tty -s && RED=$(tput setaf 1)		|| RED=
+tty -s && GREEN=$(tput setaf 2)		|| GREEN=
+tty -s && YELLOW=$(tput setaf 3)	|| YELLOW=
+tty -s && RESET=$(tput sgr0)		|| RESET=       # reset fg/bg color
+tty -s && DELETE='\r\033[K'		|| DELETE='\n'  # delete current line
+
+_cleanUp() {
+	[ -f "${SCRIPT:-}" ] && {
 		rm "$SCRIPT"
 	}
 	exit
 }
 
-trap cleanUp INT EXIT TERM
+trap _cleanUp INT EXIT TERM
 
-exe() {
-	# Prepare script
+_exe() {
+	# prepare script
 	SCRIPT=$(mktemp "/tmp/$APP-XXX") || {
-		echo -e "Error: Could not create temporary script file.\n" >&2
+		echo "Error: Could not create temporary script file."
+		echo
 		exit 1
-	}
+	} >&2
+	chmod 700 "$SCRIPT" || {
+		echo "Error: Could not change file mode bits."
+		echo
+		exit 1
+	} >&2
+
 	echo '#!/bin/bash' > "$SCRIPT"
 
 	# build $CMD with quoted command and arguments
@@ -42,15 +54,14 @@ exe() {
 				# since we use ' ourself, we need to escape it when writing to script
 				#i=$(echo "$i" | sed 's/'\''/'\''\\'\'\''/g') # use printf, to avoid problems with echo options in $i, e.g. -n
 				i=$(printf "%s\n" "$i" | sed 's/'\''/'\''\\'\'\''/g')
-				CMD=$CMD' '\'"$i"\'
+				CMD=${CMD:-}' '\'"$i"\'
 				echo -n " '$i'" >> "$SCRIPT"
 			fi
 	done
 	CMD=${CMD# }
-	chmod u+x "$SCRIPT"
 
-	# Logging
-	if [ -n "$LOG" ]; then
+	# logging
+	if [ -n "${LOG:-}" ]; then
 		{
 			echo -ne "$(date "+%F %T")\t"
 			tail -1 "$SCRIPT"
@@ -60,65 +71,96 @@ exe() {
 
 	# in progress
 	echo -n "[ $YELLOW..$RESET ] $YELLOW>>$RESET $CMD"
-	
-	if RES=$($SCRIPT 2>&1); then
+
+	if RESULT=$($SCRIPT 2>&1); then
 		# success; is there output?
-		[ -n "$RES" ] && {
+		[ -n "$RESULT" ] && {
 			# more than one line output?
-			if [[ "$RES" == *$'\n'* ]]; then
+			if [[ "$RESULT" == *$'\n'* ]]; then
 				COUNT=$(( ${#CMD} + 14 ))
 				SPACE=$(printf "%${COUNT}s")
-				RES=$(echo -n "$RES" | sed "s/^/$SPACE/g")
-				RES=${RES:$COUNT}
+				RESULT=$(echo -n "$RESULT" | sed "s/^/$SPACE/g")
+				RESULT=${RESULT:$COUNT}
 			fi
-			RES=" $YELLOW>>$RESET $GREEN$RES$RESET"
+			RESULT=" $YELLOW>>$RESET $GREEN$RESULT$RESET"
 		}
 		echo -en $DELETE
-		echo "[$GREEN OK $RESET] $YELLOW>>$RESET $CMD$RES"
+		echo "[$GREEN OK $RESET] $YELLOW>>$RESET $CMD$RESULT"
 		return 0
 	else
 		# errocode > 0
 		CODE=$?
 		# is there output?
-		[ -n "$RES" ] && {
+		[ -n "$RESULT" ] && {
 			# more than one line output?
-			if [[ "$RES" == *$'\n'* ]]; then
+			if [[ "$RESULT" == *$'\n'* ]]; then
 				COUNT=$(( ${#CMD} + 17 ))
 				SPACE=$(printf "%${COUNT}s")
-				RES=$(echo -n "$RES" | sed "s/^/$SPACE/g")
-				RES=${RES:$COUNT}
+				RESULT=$(echo -n "$RESULT" | sed "s/^/$SPACE/g")
+				RESULT=${RESULT:$COUNT}
+			else
+				# cmd execution failed? not found, no permission etc. --> remove temporary file name and line number from $RESULT
+				if grep -qP "^$SCRIPT?: line \d+:" <<< "$RESULT"; then
+					RESULT=$(cut -d: -f3- <<< "$RESULT")
+					RESULT=${RESULT:1}
+				fi
 			fi
-			RES=" $YELLOW>>$RESET $RED$RES$RESET"
+			RESULT=" $YELLOW>>$RESET $RED$RESULT$RESET"
 		}
 		echo -en $DELETE
-		echo "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD$RES"
+		echo "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD$RESULT"
 		return $CODE
 	fi
 }
 
+_line() {
+	echo
+	printf '%.0s-' $(seq 1 ${COLUMNS:-80})
+	echo
+	echo
+}
+
 if [ $# -gt 0 ]; then
-	exe "$@"
+	_exe "$@"
 	exit $?
 else
-	echo -e "Executes a command and show result/output in a nice way. Original return code is preserved.\n" >&2
-	echo -e "Usage: $APP <command> <arguments>\n" >&2
+	{
+		echo "Executes a command and show result/output in a nice way. Original return code is preserved."
+		echo
+		echo "Usage: $APP <command> <arguments>"
+		_line
 
-	echo -e "Example: $APP echo 'hello world'\n" >&2
-	DEMO=$("$APP" echo 'hello world')
-	ERROR=$?
-	echo -e "Result:\n$DEMO" >&2
-	echo -e "Return code: $ERROR\n\n" >&2
+		echo "Example: $YELLOW$APP echo 'hello world'$RESET"
+		echo
+		DEMO=$("$APP" echo 'hello world')
+		ERROR=$?
+		echo "Result:"
+		echo
+		echo "$DEMO"
+		echo "Return code: $GREEN$ERROR$RESET"
+		_line
 
-	echo -e "Example with error: $APP false 'hello world'\n" >&2
-	DEMO=$("$APP" false 'hello world')
-	ERROR=$?
-	echo -e "Result:\n$DEMO" >&2
-	echo -e "Return code: $ERROR\n\n" >&2
+		echo "Example with error: $YELLOW$APP false 'hello world'$RESET"
+		echo
+		set +e
+		DEMO=$("$APP" false 'hello world')
+		ERROR=$?
+		set -e
+		echo "Result:"
+		echo
+		echo "$DEMO"
+		echo "Return code: $RED$ERROR$RESET"
+		_line
 
-	echo -e "Example with escaped pipe: $APP echo foo \| cat\n" >&2
-	DEMO=$("$APP" echo foo \| cat)
-	ERROR=$?
-	echo -e "Result:\n$DEMO" >&2
-	echo -e "Return code: $ERROR\n" >&2
-	exit 1
+		echo "Example with escaped pipe: $YELLOW$APP echo foo '|' cat$RESET"
+		echo
+		DEMO=$("$APP" echo foo '|' cat)
+		ERROR=$?
+		echo "Result:"
+		echo
+		echo "$DEMO"
+		echo "Return code: $GREEN$ERROR$RESET"
+		echo
+		exit 1
+	} >&2
 fi
