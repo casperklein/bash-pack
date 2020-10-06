@@ -1,7 +1,9 @@
 # all targets are phony (no files to check)
 .PHONY: default install uninstall repair update
 
-default: build
+default:
+	@cat README.md
+	@echo
 
 install:
 	./install.sh
