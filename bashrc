@@ -22,16 +22,16 @@ export LS_OPTIONS='--color=auto' # -N https://www.gnu.org/software/coreutils/quo
 eval "$(dircolors)"
 alias ls='ls $LS_OPTIONS'
 alias ll='LC_COLLATE=C ls $LS_OPTIONS -Ahl' # https://unix.stackexchange.com/a/39853/45235
-alias l='ls $LS_OPTIONS -Ahl'
+#alias checkinstall='checkinstall colormake install'
+alias configure='./configure | ccze -A'
 alias diff='colordiff'
 alias diffv='colordiff --width=$COLUMNS -y'
-#alias tail='colortail -q'
-alias configure='./configure | ccze -A'
-#alias make='low colormake' # https://github.com/pagekite/Colormake/issues/21 --> 'docker push' progress is suppressed
-#alias checkinstall='checkinstall colormake install'
 #export GREP_OPTIONS='--color=auto' #deprecated
 alias grep='grep --color=auto'
 alias highlight='ccze -CA'
+alias ip='ip -c=auto'
+#alias make='low colormake' # https://github.com/pagekite/Colormake/issues/21 --> 'docker push' progress is suppressed
+#alias tail='colortail -q'
 
 # Some shortcuts
 alias apt='aptitude'
@@ -55,7 +55,6 @@ alias hexdump='hexdump -C'
 #alias httpheader='curl -s --compressed -D- -o /dev/null' # File is completely downloaded. Probably not good for large files..
 alias httpheader='timeout 2 curl -s --compressed -D- -o /dev/null' # Terminate after 2 seconds. That prevents downloading a large file :)
 alias insserv='insserv -v'
-alias ip='ip -c=auto'
 alias ipcalc='ipcalc -nb'
 alias jobs='jobs -l'
 alias killall='killall -v -e'
