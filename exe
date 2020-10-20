@@ -47,7 +47,7 @@ _exe() {
 	# build script
 	for i in "$@"; do
 			# escape bash operators & build-ins
-			if [[ "$i" =~ ^[\<\>\|\&\*\;]+$|^time$ ]]; then
+			if [[ "$i" =~ ^[0-9\<\>\|\&\*\;]+$|^time$ ]]; then
 				CMD=$CMD" $i"
 				echo -n " $i" >> "$SCRIPT"
 			else
