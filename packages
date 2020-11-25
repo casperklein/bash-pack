@@ -18,6 +18,7 @@ haveged
 htop
 iputils-ping
 jq
+libevent-2.1-6
 lsof
 lynx
 mlocate

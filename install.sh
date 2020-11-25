@@ -4,6 +4,22 @@ set -ueo pipefail
 
 SCRIPTS=$(dirname "$(readlink -f "$0")")
 
+_installLatest() {
+	# $1	package
+	# $2..	make actions
+	local app version target
+	app=$1
+	shift
+	version=$(dpkg-query -f='${Version}' --show "$app" 2>/dev/null || echo -n "0")
+	target=$(echo "$SCRIPTS/$app/$app"_*_amd64.deb | cut -d_ -f2)
+	if dpkg --compare-versions "$version" lt "$target"; then
+		# install package
+		make -j 1 -C "$SCRIPTS/$app/" "$@"
+	else
+		echo "$app is up-to-date."
+	fi
+}
+
 # running as root?
 [ "$(id -u)" == "0" ] && ROOT=true || ROOT=false
 
@@ -12,7 +28,7 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 if [ "$ROOT" = true ]; then
 	if [ "${1:-}" == "-u" ]; then
 		# update --> more silent
-		apt-get update > /dev/null &&
+		apt-get update > /dev/null
 		if aptitude -s -y install $(<"$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
 			echo "Installing new packages.."
 			echo
@@ -20,29 +36,13 @@ if [ "$ROOT" = true ]; then
 	        fi
 	else
 		# install
-		apt-get update &&
+		apt-get update
 		apt-get $YES install $(<"$SCRIPTS"/packages)
 	fi
 
-	# install bat if not installed or outdated
-	VERSION=$(dpkg-query -f='${Version}' --show bat 2>/dev/null || echo -n "0")
-	TARGET=$(echo "$SCRIPTS"/bat/bat_*_amd64.deb | cut -d_ -f2)
-	if dpkg --compare-versions "$VERSION" "lt" "$TARGET"; then
-		# install bat package
-		MASCHINE=$(uname -m)
-		case "$MASCHINE" in
-			x86_64)
-				ARCH="amd64"
-			       ;;
-			aarch64)
-				ARCH="arm64"
-				;;
-			*)
-				ARCH="armhf"
-				;;
-		esac
-		dpkg -i "$SCRIPTS"/bat/bat_${TARGET}_$ARCH.deb
-	fi
+	# install/update custom packages
+	_installLatest bat install
+	_installLatest tmux install copy-conf
 fi
 echo
 
@@ -93,11 +93,8 @@ fi
 
 echo 'Done.'
 echo
+
 if aptitude search ~iunattended-upgrades &> /dev/null; then
-	{
-		echo "Warning: 'unattended-upgrades' package is installed!"
-		echo
-	} >&2
-else
-	exit 0
-fi
+	echo "Warning: 'unattended-upgrades' package is installed!"
+	echo
+fi >&2
