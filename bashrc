@@ -235,6 +235,14 @@ HISTIGNORE='truecrypt*'
 # The  number  of commands to remember in the command history (default value is 500)
 HISTSIZE=500000
 
+# shortcut for awk '{print $1}'
+awkk() {
+	# $1	column to return
+	local col
+	col=${1:-1}
+	awk '{print $'$col'}'
+}
+
 # Reminder Function
 reminder() {
 	out=
