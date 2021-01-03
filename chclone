@@ -1,13 +1,26 @@
 #!/bin/bash
 
+set -ueo pipefail
+
 APP=${0##*/}
 
 # check if parameter count is 2 and reference and target exists
 if [ $# -ne 2 ] || [ ! -e "$1" ] || [ ! -e "$2" ]; then
-	echo -e "Copy ownership and mod bits\n" >&2
-	echo -e "Usage: $APP <reference> <target>\n" >&2
+	echo "Copy ownership and mod bits"
+	echo
+	echo "Usage: $APP <reference> <target>"
+	echo
 	exit 1
-fi
+fi >&2
+
+echo "Changing ownership and mod bits for: $2"
+echo
 
 chown --reference="$1" "$2"
 chmod --reference="$1" "$2"
+
+{
+	ls -l "$1"
+	ls -l "$2"
+} | column -t
+echo
