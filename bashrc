@@ -101,6 +101,8 @@ cat() {
 
 # copy with progress
 alias copy='low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive'
+
+# copy single file
 copyfile() {
 	local dst line
 	if [ ! -f "$1" ]; then
@@ -132,6 +134,8 @@ copyfile() {
 	fi
 	echo
 }
+
+# move single file
 movefile() {
 	copyfile "$1" "$2" &&
 	trash "$1"
@@ -159,45 +163,14 @@ alias mv='low mv -i'
 alias reboot='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y" ] && reboot'
 alias poweroff='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y" ] && poweroff'
 
-# Docker aliase
-hash docker 2> /dev/null && source docker-aliase.sh
+# Docker stuff
+hash docker 2> /dev/null && source include/docker.sh
 
 # Apache stuff
-alias ac='exe apachectl configtest'
-alias ar='exe apachectl configtest && exe service apache2 restart'
+hash apachectl 2> /dev/null && source include/apache.sh
 
-a2() {
-	local CMD=$1
-	shift
-	command a2$CMD "$@" &&
-	exe apachectl configtest &&
-	exe service apache2 reload
-}
-
-a2ensite()  { a2 ensite "$@";  }
-a2dissite() { a2 dissite "$@"; }
-a2enmod()   { a2 enmod "$@";   }
-a2dismod()  { a2 dismod "$@";  }
-
-# git clone shortcut
-alias commit='git diff; git commit -a && git push'
-alias gs='git status'
-alias gd='git diff'
-alias gl='git log --graph --decorate --abbrev-commit --all --pretty=oneline'
-gc() {
-	local URL DIR
-	if [[ "$1" != "https://github.com/"* ]]; then
-		if [[ "$1" == *"/"* ]]; then
-			URL="https://github.com/$1"
-		else
-			URL="https://github.com/casperklein/$1"
-		fi
-	else
-		local URL="$1"
-	fi
-	DIR=$(basename "$1")
-	git clone --recurse-submodules "$URL" "$DIR" && cd "$DIR"
-}
+# Git stuff
+hash git 2> /dev/null && source include/git.sh
 
 # make shell script
 msh() {
@@ -207,17 +180,16 @@ msh() {
 		echo
 		return 1
 	fi >&2
-	cat > "$1" <<"EOF"
-#!/bin/bash
+	cat > "$1" <<-"EOF"
+		#!/bin/bash
 
-set -ueo pipefail
+		set -ueo pipefail
 
 
-EOF
+	EOF
         chmod u+x "$1"
         vi "$1"
 }
-
 
 # Writes bash history immediately;  Useful for concurrent user log ins
 # Applies only on interactive shells

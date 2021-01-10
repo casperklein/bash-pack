@@ -10,7 +10,7 @@ alias dps='docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Command}}\t{{.Po
 alias dr='docker run --rm -it'
 alias drm='docker rm -f $(docker ps -aq)'
 alias drmi='docker rmi -f $(docker images -q)'
-alias ds='docker stats'
+alias ds='hash docker-ctop 2> /dev/null && docker-ctop || docker stats'
 alias dv='docker volume ls'
 
 # docker apps
