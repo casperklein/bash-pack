@@ -9,9 +9,9 @@ syslog=/var/log/syslog
 export ua='Mozilla/5.0 (Windows NT 5.1; rv:23.0) Gecko/20100101 Firefox/23.0'
 
 # Prompt
-source "$SCRIPTS"/bash-prompt
-source "$SCRIPTS"/apt-completion
-source "$SCRIPTS"/tmux/tmux-completion
+source "$SCRIPTS/bash-prompt"
+source "$SCRIPTS/apt-completion"
+source "$SCRIPTS/tmux/tmux-completion"
 source /usr/share/bash-completion/bash_completion
 
 # Color my life
@@ -62,7 +62,7 @@ alias less='less -i -R'
 alias locate='locate -i'
 alias locateu='updatedb && locate -i'
 alias loop='while :; do'
-alias mkcd="source \"$SCRIPTS\"/mkcd"
+alias mkcd="source \"$SCRIPTS/mkcd\""
 alias mounti='mount | column -t | grep -P '\''.*?on\s+/\s+.*|$'\' # or use findmnt
 alias mtr='mtr -o LSDNABW'
 alias mysqlctl='/etc/init.d/mysql'
@@ -164,13 +164,13 @@ alias reboot='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y"
 alias poweroff='read -p "Are you sure? [y] " -n 1 line && echo && [ "$line" == "y" ] && poweroff'
 
 # Docker stuff
-hash docker 2> /dev/null && source include/docker.sh
+hash docker 2> /dev/null && source "$SCRIPTS/include/docker.sh"
 
 # Apache stuff
-hash apachectl 2> /dev/null && source include/apache.sh
+hash apachectl 2> /dev/null && source "$SCRIPTS/include/apache.sh"
 
 # Git stuff
-hash git 2> /dev/null && source include/git.sh
+hash git 2> /dev/null && source "$SCRIPTS/include/git.sh"
 
 # make shell script
 msh() {
