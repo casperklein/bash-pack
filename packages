@@ -21,6 +21,7 @@ jq
 libevent-2.1-6
 lsof
 lynx
+man
 mlocate
 moreutils
 most
