@@ -4,20 +4,7 @@
 SHELL := /bin/bash
 APP := bat
 
-ARCH := ${shell			\
-	MACHINE=$$(uname -m);	\
-	case "$$MACHINE" in	\
-	x86_64)			\
-		echo "amd64"	\
-		;;		\
-	aarch64)		\
-		echo "arm64"	\
-		;;		\
-	*)			\
-		echo "armhf"	\
-		;;		\
-	esac			\
-}
+ARCH := $(shell dpkg --print-architecture)
 
 default: install
 

@@ -7,11 +7,12 @@ SCRIPTS=$(dirname "$(readlink -f "$0")")
 _installLatest() {
 	# $1	package
 	# $2..	make actions
-	local app version target
+	local app version arch target
 	app=$1
 	shift
 	version=$(dpkg-query -f='${Version}' --show "$app" 2>/dev/null || echo -n "0")
-	target=$(echo "$SCRIPTS/$app/$app"_*_amd64.deb | cut -d_ -f2)
+	arch=$(dpkg --print-architecture)
+	target=$(echo "$SCRIPTS/$app/$app"_*_"$arch.deb" | cut -d_ -f2)
 	if dpkg --compare-versions "$version" lt "$target"; then
 		# install package
 		MAKEFLAGS= make -C "$SCRIPTS/$app/" "$@"
