@@ -67,6 +67,9 @@ set pastetoggle=<F8>
 " Certain configs in /etc/vimrc are ignored if ~/.vimrc does not exist --> https://github.com/vim/vim/issues/2042
 let skip_defaults_vim = 1
 
+" YAML rules
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
+
 " Source a global configuration file if available
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
