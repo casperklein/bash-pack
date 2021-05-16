@@ -1,8 +1,9 @@
 # git stuff
 alias commit='git diff; git commit -a && git push'
-alias gs='git status'
+alias gb='PAGER= git branch -a'
 alias gd='git diff'
 alias gl='git log --graph --decorate --abbrev-commit --all --pretty=oneline'
+alias gs='git status'
 gc() {
 	local URL DIR
 	if [[ "$1" != "https://github.com/"* ]]; then
