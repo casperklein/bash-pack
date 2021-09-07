@@ -176,10 +176,12 @@ hash git 2> /dev/null && source "$SCRIPTS/include/git.sh"
 msh() {
 	[ $# -eq 0 ] && return 1
 	if [ -e "$1" ]; then
-		echo "Error: '$1' does already exist."
-		echo
-		return 1
-	fi >&2
+		vi "$1"
+		return
+		#echo "Error: '$1' does already exist."
+		#echo
+		#return 1
+	fi #>&2
 	cat > "$1" <<-"EOF"
 		#!/bin/bash
 
