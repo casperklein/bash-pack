@@ -7,10 +7,10 @@ startAnimation() {
 		echo
 		exit 1
 	fi
-	(tty -s) || return # no tty? no animation!
+	tty -s || return 0 # no tty? no animation!
 	CODE='
 		DELETE="\033[1D"
-		SLEEP=0.5
+		SLEEP=0.2
 		while :; do
 		echo -en "\\"
 		sleep $SLEEP
@@ -26,7 +26,7 @@ startAnimation() {
 
 	echo "$CODE" | bash &
 	APID=$!
-	APIDFILE=$(mktemp /tmp/${0##*/}.animation.XXX.pid)
+	APIDFILE=$(mktemp /tmp/"${0##*/}".animation.XXX.pid)
 	echo $APID > "$APIDFILE"
 }
 
