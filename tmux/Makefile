@@ -9,8 +9,9 @@ ARCH := $(shell dpkg --print-architecture)
 default: install
 
 install:
-	@echo "Install $(APP) package.."
+	@echo "Install $(APP) and libevent package.."
 	@dpkg -i $(APP)*$(ARCH).deb
+	@apt-get -y install "$$(apt-cache search libevent-core | awk '{print $$1}')"
 	@echo
 
 copy-conf:
@@ -25,3 +26,4 @@ uninstall:
 	@apt-get purge "$(APP)"
 	@echo "Remove APT pinning.."
 	@rm /etc/apt/preferences.d/tmux
+	@apt-get purge "$$(apt-cache search libevent-core | awk '{print $$1}')"
