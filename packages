@@ -33,6 +33,7 @@ psmisc
 pv
 rename
 rsync
+sudo
 tar
 tcpdump
 tcpflow
