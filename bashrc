@@ -99,46 +99,14 @@ cat() {
 	fi
 }
 
-# copy with progress
+# copy/move with progress
 alias copy='low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive'
-
-# copy single file
-copyfile() {
-	local dst line
-	if [ ! -f "$1" ]; then
-		echo "Error: File '$1' does not exist."
-		echo
-		return 1
-	fi >&2
-	dst="$2"
-	if [ -d "$dst" ]; then
-		dst="$dst/$(basename "$1")"
-	fi
-
-	if [ -f "$dst" ]; then
-		echo "File '$dst' already exist."
-		read -p "Overwrite? [y/N] " line
-		if [ "$line" == "y" ]; then
-			echo
-			pv -bper "$1" > "$dst"
-		else
-			echo
-			return 1
-		fi
-	else
-		pv -bper "$1" > "$dst"
-	fi
-	if [ ! $? -eq 0 ]; then
-		echo
-		return 1
-	fi
-	echo
-}
-
-# move single file
-movefile() {
-	copyfile "$1" "$2" &&
-	trash "$1"
+move() {
+	local low='nice -n 20 ionice -c3'
+	$low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive "$@" &&
+	# remove last positional argument
+	set -- "${@: 1: $#-1}" &&
+	$low rm "$@"
 }
 
 # trash
@@ -210,14 +178,6 @@ HISTIGNORE='truecrypt*'
 # The  number  of commands to remember in the command history (default value is 500)
 HISTSIZE=500000
 
-# shortcut for awk '{print $1}'
-awkk() {
-	# $1	column to return
-	local col
-	col=${1:-1}
-	awk '{print $'$col'}'
-}
-
 # Reminder Function
 reminder() {
 	out=
@@ -239,7 +199,7 @@ delay() {
 	#target_epoch=$(date -d '01/01/2010 12:00' +%s)
 	#sleep_seconds=$(( $target_epoch - $current_epoch ))
 	#sleep $sleep_seconds
-	
+
 	# $1 = [dd] hh:mm
 	[ "$2" ] && set "$1 $2"
 	if [ ${#1} -ne 5 ] && [ ${#1} -ne 8 ]; then
