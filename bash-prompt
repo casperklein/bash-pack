@@ -8,7 +8,7 @@ if [ -n "$PS1" ]; then # prevent WinSCP issues
 		RED=$(tput setaf 1)
 		GREEN=$(tput setaf 2)
 		CYAN=$(tput setaf 6)
-		RST=$(tput sgr0)
+		RESET=$(tput sgr0)
 	fi
 	bash_prompt_command() {
 		RTN=$?
@@ -25,7 +25,7 @@ if [ -n "$PS1" ]; then # prevent WinSCP issues
 			RES=$GREEN
 #		elif [ $RTN == 127 ]; then # 'command not found'
 #			RES=$GREEN
-		
+
 		# ERROR
 		else
 			RES=$RED
@@ -33,5 +33,5 @@ if [ -n "$PS1" ]; then # prevent WinSCP issues
 		history -a
 	}
 	PROMPT_COMMAND=bash_prompt_command
-	PS1='\[$RST\]\[$CYAN\]\h\[$GREEN\]:\w\[$RES\]\$\[$RST\] '
+	PS1='\[$RESET\]\[$CYAN\]\h\[$GREEN\]:\w\[$RES\]\$\[$RESET\] '
 fi
