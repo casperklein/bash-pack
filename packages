@@ -2,6 +2,7 @@ apt-file
 aptitude
 bash-completion
 bc
+binutils
 bootlogd
 boxes
 bsdmainutils
