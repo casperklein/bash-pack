@@ -44,6 +44,7 @@ if [ "$ROOT" = true ]; then
 
 	# install/update custom packages
 	_installLatest bat install
+	_installLatest duf install
 	_installLatest tmux install copy-conf
 else
 	echo "Warning: You are not root. Package installation skipped." >&2
