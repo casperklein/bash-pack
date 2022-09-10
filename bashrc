@@ -46,6 +46,7 @@ alias da='awk '\''{print NR": "$0; for(i=1;i<=NF;++i)print "\t"i": "$i}'\'''
 alias dd='dd status=progress'
 # Show ext 2, 3 & 4 FS; human readable; sort by 'use%' then 'avail'; highligt root fs
 alias df='echo -e "Filesystem Size Used Avail Use% Mountpoint\n$(\df -hP | tail -n+2 | sort -k5nr -k4n )" | column -t | grep -P '\''.+/$|$'\''; echo'
+alias df='duf'
 alias encrypt='low openssl aes-256-cbc -e -salt -md sha256' # when nothing is supplied, openssl defaults are: -e -salt -md md5
 alias decrypt='low openssl aes-256-cbc -d -salt -md sha256' # when nothing is supplied, openssl defaults are: -e (if -d is not present) -salt -md md5
 alias digl='dig @localhost'
