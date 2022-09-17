@@ -31,15 +31,15 @@ if [ "$ROOT" = true ]; then
 	if [ "${1:-}" == "-u" ]; then
 		# update --> more silent
 		apt-get update > /dev/null
-		if aptitude -s -y install $(<"$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
+		if aptitude -s -y install $(cut -d' ' -f1 "$SCRIPTS"/packages) | grep -q "The following NEW packages will be installed"; then
 			echo "Installing new packages.."
 			echo
-			aptitude install $(<"$SCRIPTS"/packages)
+			aptitude install $(cut -d' ' -f1 "$SCRIPTS"/packages)
 	        fi
 	else
 		# install
 		apt-get update
-		apt-get $YES install $(<"$SCRIPTS"/packages)
+		apt-get $YES install $(cut -d' ' -f1 "$SCRIPTS"/packages)
 	fi
 
 	# install/update custom packages

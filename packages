@@ -5,31 +5,32 @@ bc
 binutils
 bootlogd
 boxes
-bsdmainutils
+bsdmainutils # col, hd, cal
 ccze
 colordiff
 colormake
 coreutils
 curl
-dnsutils
+dnsutils # dig, host, nslookup
 dos2unix
-findutils
+findutils # find, xargs
 git
 haveged
 htop
 iputils-ping
 jq
+libarchive-zip-perl # crc32
 lsof
 lynx
 man
 mlocate
-moreutils
+moreutils # sponge, vidir
 most
 mtr-tiny
-netcat-openbsd
 net-tools
+netcat-openbsd
 openssl
-procps
+procps # kill, pgrep, ps, uptime, watch
 psmisc
 pv
 rename
