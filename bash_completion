@@ -486,3 +486,4 @@ complete -F _complete_alias de
 complete -F _complete_alias db
 
 complete -F _complete_alias tailf
+complete -F _complete_alias docker-compose
