@@ -19,8 +19,6 @@ alias portainer='dr -p 9000:9000 --name portainer -v /var/run/docker.sock:/var/r
 
 # docker-compose-plugin alias
 alias docker-compose='docker compose'
-source /usr/share/bash-completion/completions/docker
-complete -F _docker docker-compose
 
 dockerignore() {
 	#echo "# Exclude all"
