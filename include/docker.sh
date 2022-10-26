@@ -17,6 +17,11 @@ alias dv='docker volume ls'
 alias hadolint='docker run --rm -i -v "$PWD"/Dockerfile:/Dockerfile:ro hadolint/hadolint /bin/hadolint --ignore DL3008 /Dockerfile'
 alias portainer='dr -p 9000:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer'
 
+# docker-compose-plugin alias
+alias docker-compose='docker compose'
+source /usr/share/bash-completion/completions/docker
+complete -F _docker docker-compose
+
 dockerignore() {
 	#echo "# Exclude all"
 	echo '*'
