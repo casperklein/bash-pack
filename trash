@@ -5,13 +5,13 @@
 # It moves files/directorys to a defined directory instead of removing them from the filesystem.
 # If you really want to get rid of them, you can use the trash-empty command.
 
-# Version:  0.41
+# Version:  0.42
 # Build:    2022-12-12
 # Author:   Heiko Barth
 # Licence:  Beer-Ware (See: https://en.wikipedia.org/wiki/Beerware)
 
 APP=${0##*/}
-VER=0.41
+VER=0.42
 
 set -ueo pipefail
 
@@ -48,7 +48,7 @@ checkBinarys() {
 		} >&2
 	done
 }
-checkBinarys "date" "mkdir" "mv" "stat"
+checkBinarys "basename" "date" "mkdir" "mv" "stat"
 
 # shellcheck disable=SC2174
 mkdir -p -m 700 "$TRASHDIR" 2> /dev/null || {
@@ -79,7 +79,8 @@ for i in "$@"; do
 	fi
 
 	# basename of file or directory
-	NAME=${i##*/}
+	# ${i##*/} returns empty string for "directory/"
+	NAME=$(basename "$i")
 
 	# If target exist, find an alternate name
 	MAX=500
