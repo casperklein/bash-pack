@@ -5,13 +5,13 @@
 # It moves files/directorys to a defined directory instead of removing them from the filesystem.
 # If you really want to get rid of them, you can use the trash-empty command.
 
-# Version:  0.40
-# Build:    2022-12-11
+# Version:  0.41
+# Build:    2022-12-12
 # Author:   Heiko Barth
 # Licence:  Beer-Ware (See: https://en.wikipedia.org/wiki/Beerware)
 
 APP=${0##*/}
-VER=0.40
+VER=0.41
 
 set -ueo pipefail
 
@@ -20,16 +20,6 @@ if [ -z "${TRASHDIR:-}" ]; then
 	echo
 	exit 1
 fi >&2
-
-checkBinarys() {
-	for i in "$@"; do
-		hash "$i" 2>/dev/null || {
-			echo "Error: Binary '$i' is missing."
-			echo
-			exit 1
-		} >&2
-	done
-}
 
 [ $# -eq 0 ] && {
 	echo "$APP $VER"
@@ -48,7 +38,17 @@ checkBinarys() {
 	exit 1
 } >&2
 
-checkBinarys "mkdir" "mv" "stat"
+checkBinarys() {
+	local i
+	for i in "$@"; do
+		hash "$i" 2>/dev/null || {
+			echo "Error: Binary '$i' is missing."
+			echo
+			exit 1
+		} >&2
+	done
+}
+checkBinarys "date" "mkdir" "mv" "stat"
 
 # shellcheck disable=SC2174
 mkdir -p -m 700 "$TRASHDIR" 2> /dev/null || {
@@ -57,11 +57,19 @@ mkdir -p -m 700 "$TRASHDIR" 2> /dev/null || {
 	exit 1
 } >&2
 
-FAIL=0
-
 # Set your desired date format; See 'man date' for details
 TODAY=$(date +%Y-%m-%d)
+TRASHTODAY="$TRASHDIR/$TODAY"
 
+# Create target directory
+# shellcheck disable=SC2174
+mkdir -p -m 700 "$TRASHTODAY" 2> /dev/null || {
+	echo "Error: Failed to create directory '$TRASHTODAY'."
+	echo
+	exit 1
+} >&2
+
+FAIL=0
 for i in "$@"; do
 	# Abort if file does not exist and is no symbolic link (there can be symbolic links pointing to files that does not exist)
 	if [ ! -e "$i" ] && [ "$(stat -c %F "$i" 2>/dev/null)" != "symbolic link" ]; then
@@ -73,33 +81,31 @@ for i in "$@"; do
 	# basename of file or directory
 	NAME=${i##*/}
 
-	# Create target directory
-	# shellcheck disable=SC2174
-	mkdir -p -m 700 "$TRASHDIR/$TODAY" 2> /dev/null || {
-		echo "Error: Failed to create directory '$TRASHDIR/$TODAY'."
-		echo
-		exit 1
-	} >&2
-
 	# If target exist, find an alternate name
-	if [ -e "$TRASHDIR/$TODAY/$NAME" ] || [ -h "$TRASHDIR/$TODAY/$NAME" ]; then
+	MAX=500
+	if [ -e "$TRASHTODAY/$NAME" ] || [ -h "$TRASHTODAY/$NAME" ]; then
 		j=0
 		while :; do
 			((++j))
-			if [ ! -e "$TRASHDIR/$TODAY/$NAME.$j" ] && [ ! -h "$TRASHDIR/$TODAY/$NAME.$j" ]; then
-				mv "$i" "$TRASHDIR/$TODAY/$NAME.$j" || {
-					echo "Error: Failed to move '$i' --> '$TRASHDIR/$TODAY/$NAME.$j'"
-					FAIL=1
-				} >&2
+			if [ ! -e "$TRASHTODAY/$NAME.$j" ] && [ ! -h "$TRASHTODAY/$NAME.$j" ]; then
+				NAME="$NAME.$j"
 				break
 			fi
+			if ((j == MAX)); then
+				echo "Warning: '$TRASHTODAY/$NAME' already exists."
+				echo "Error: Could not find an alternative target name. Gave up, after $MAX iterations: $TRASHTODAY/$NAME.$j"
+				echo "Error: File '$i' not moved."
+				FAIL=1
+				continue
+			fi
 		done
-	else
-		mv "$i" "$TRASHDIR/$TODAY/$NAME" || {
-			echo "Error: Failed to move '$i' --> '$TRASHDIR/$TODAY/$NAME'"
-			FAIL=1
-		} >&2
 	fi
+
+	mv "$i" "$TRASHTODAY/$NAME" || {
+		echo "Error: Failed to move '$i' --> '$TRASHTODAY/$NAME.$j'"
+		FAIL=1
+	} >&2
 done
 
-[ $FAIL -gt 0 ] && exit 1 || exit 0
+[ $FAIL -eq 1 ] && echo
+exit $FAIL

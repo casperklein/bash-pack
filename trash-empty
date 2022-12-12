@@ -9,6 +9,7 @@ if [ -z "${TRASHDIR:-}" ]; then
 fi >&2
 
 checkBinarys() {
+	local i
 	for i in "$@"; do
 		hash "$i" 2>/dev/null || {
 			echo "Error: Binary '$i' is missing."
