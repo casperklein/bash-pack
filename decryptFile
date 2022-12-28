@@ -2,20 +2,36 @@
 
 # See also encryptFile
 
-# Encryption
+# SETUP --------------------------------------------------------------
+
 ENCKEY=''
-DIGEST='sha256'
+KDF='pbkdf2'
+ITER='5555555' # iterations for key derivation # ~6 seconds @ Intel(R) Xeon(R) CPU E3-1230 v3 @ 3.30GHz
 CIPHER='aes-256-cbc'
+DIGEST='sha256'
+
+# --------------------------------------------------------------------
+
+set -ueo pipefail
 
 # pv
 BLOCKSIZE=16
 
-if [ $# -lt 2 ]; then
-	echo -e "Decrypt a file.\n" >&2
-	echo -e "Usage: $(basename "$0") <input> <output>\n" >&2
-	echo -e "If <output> is - then output is redirected to STDOUT\n" >&2
+if [ $# -lt 1 ]; then
+	APP=${0##*/}
+	echo "Decrypt a file."
+	echo
+	echo "KDF:         $KDF"
+	echo "Iterations:  $ITER"
+	echo "Cipher:      $CIPHER"
+	echo "Digest:      $DIGEST"
+	echo
+	echo "Usage: $APP <input> [<output>]"
+	echo
+	echo "If <output> is empty STDOUT will be used."
+	echo
 	exit 1
-fi
+fi >&2
 
 if [ ! -e "$1" ]; then # -f does not catch FIFOs
 	echo -e "Error: File '$1' not found.\n" >&2
@@ -34,36 +50,32 @@ checkBinarys() {
 }
 
 # Check if all needed binarys are present
-checkBinarys "openssl" "pv"
+checkBinarys "openssl" "pv" "stat"
 
-if [ -z "$ENCKEY" ]; then
+if [ -z "${ENCKEY:-}" ]; then
 	read -r -s -p "Enter password: " ENCKEY
-	[ -z "$ENCKEY" ] && exit 1
+	echo
+	[ -z "$ENCKEY" ] && echo && exit 1
 fi
 
-if [ "$2" == "-" ]; then
+CMD=("openssl" "$CIPHER" "-d" "-salt" "-$KDF" "-iter" "$ITER" "-md" "$DIGEST" "-k" "$ENCKEY" "-in" "$1")
+
+if [ -z "${2:-}" ]; then
 	# STDOUT
-	if [ ! -p "$1" ]; then
-		# no FIFO
-		# Encrypt & Upload
-		openssl "$CIPHER" -d -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
-		pv -bper -s $(( ($(stat -c%s "$1") + BLOCKSIZE) / BLOCKSIZE * BLOCKSIZE + BLOCKSIZE)) 
-	else
-		# FIFO
-		openssl "$CIPHER" -d -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
-		pv -bper
-	fi
+	echo "Decrypting: $1" >&2
+	echo >&2
+	if ! "${CMD[@]}"; then
+		# Decryption failed.
+		echo
+		echo
+		exit 1
+	fi >&2
 else
 	# OUTPUT to FILE
 	echo "Decrypting: $1 --> $2"
-	if [ ! -p "$1" ]; then
-		# no FIFO
-		# Encrypt & Upload
-		openssl "$CIPHER" -d -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
-		pv -bper -s $(( ($(stat -c%s "$1") + BLOCKSIZE) / BLOCKSIZE * BLOCKSIZE + BLOCKSIZE)) > "$2"
-	else
-		# FIFO
-		openssl "$CIPHER" -d -salt -md "$DIGEST" -k "$ENCKEY" -in "$1" |
-		pv -bper > "$2"
+	if ! "${CMD[@]}" | pv -bper -s $(( ($(stat -c%s "$1") + BLOCKSIZE) / BLOCKSIZE * BLOCKSIZE + BLOCKSIZE)) > "$2"; then
+		# Decryption failed.
+		echo
+		exit 1
 	fi
 fi
