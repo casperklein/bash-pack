@@ -81,4 +81,5 @@ else
 	# TODO Check if destination file already exist
 	echo "Encrypting: $1 --> $2"
 	"${CMD[@]}" | pv -bper -s $(( ($(stat -c%s "$1") + BLOCKSIZE) / BLOCKSIZE * BLOCKSIZE + BLOCKSIZE)) > "$2"
+	echo
 fi
