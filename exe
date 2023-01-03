@@ -1,78 +1,48 @@
 #!/bin/bash
 
-# SETUP --------------------------------------------------------------
-
-# Uncomment to enable command logging to file
-#LOG="/tmp/$APP.history"
-
-# --------------------------------------------------------------------
-
 set -ueo pipefail
 
 # whats my name?
 APP=${0##*/}
 
+# Uncomment to enable command logging to file
+#LOG="/tmp/$APP.history"
+
+# force color?
+[ "${1:-}" == "--color" ] && COLOR=1 && shift || COLOR=0
+
 # no tty? no colors!
-tty -s && RED=$(tput setaf 1)		|| RED=
-tty -s && GREEN=$(tput setaf 2)		|| GREEN=
-tty -s && YELLOW=$(tput setaf 3)	|| YELLOW=
-tty -s && RESET=$(tput sgr0)		|| RESET=       # reset fg/bg color
-tty -s && DELETE='\r\033[K'		|| DELETE='\n'  # delete current line
-
-_cleanUp() {
-	[ -f "${SCRIPT:-}" ] && {
-		rm "$SCRIPT"
-	}
-	exit
-}
-
-trap _cleanUp INT EXIT TERM
+tty -s || [ "$COLOR" -eq 1 ] && RED=$(echo -ne "\e[0;31m")	|| RED=
+tty -s || [ "$COLOR" -eq 1 ] && GREEN=$(echo -ne "\e[0;32m")	|| GREEN=
+tty -s || [ "$COLOR" -eq 1 ] && YELLOW=$(echo -ne "\e[0;33m")	|| YELLOW=
+tty -s || [ "$COLOR" -eq 1 ] && RESET=$(echo -ne "\e[0m")	|| RESET=	# reset fg/bg color
+tty -s || [ "$COLOR" -eq 1 ] && DELETE=$(echo -ne "\r\033[K")	|| DELETE='\n'	# delete current line
 
 _exe() {
-	# prepare script
-	SCRIPT=$(mktemp "/tmp/$APP-XXX") || {
-		echo "Error: Could not create temporary script file."
-		echo
-		exit 1
-	} >&2
-	chmod 700 "$SCRIPT" || {
-		echo "Error: Could not change file mode bits."
-		echo
-		exit 1
-	} >&2
-
-	echo '#!/bin/bash' > "$SCRIPT"
-
 	# build $CMD with quoted command and arguments
-	# build script
+	CMD=
 	for i in "$@"; do
 			# escape bash operators & build-ins
 			if [[ "$i" =~ ^[0-9\<\>\|\&\*\;]+$|^time$ ]]; then
 				CMD=$CMD" $i"
-				echo -n " $i" >> "$SCRIPT"
 			else
-				# since we use ' ourself, we need to escape it when writing to script
+				# since we use ' ourself, we need to escape it
 				#i=$(echo "$i" | sed 's/'\''/'\''\\'\'\''/g') # use printf, to avoid problems with echo options in $i, e.g. -n
 				i=$(printf "%s\n" "$i" | sed 's/'\''/'\''\\'\'\''/g')
-				CMD=${CMD:-}' '\'"$i"\'
-				echo -n " '$i'" >> "$SCRIPT"
+				CMD=$CMD' '\'"$i"\'
 			fi
 	done
-	CMD=${CMD# }
+	CMD=${CMD:1}
 
 	# logging
 	if [ -n "${LOG:-}" ]; then
-		{
-			echo -ne "$(date "+%F %T")\t"
-			tail -1 "$SCRIPT"
-			echo
-		} >> "$LOG"
+		printf "%s\t%s\n" "$(date '+%F %T')" "$CMD" >> "$LOG"
 	fi
 
 	# in progress
-	echo -n "[ $YELLOW..$RESET ] $YELLOW>>$RESET $CMD"
+	printf "%s" "[ $YELLOW..$RESET ] $YELLOW>>$RESET $CMD"
 
-	if RESULT=$($SCRIPT 2>&1); then
+	if RESULT=$(bash -c "$CMD" 2>&1); then
 		# success; is there output?
 		[ -n "$RESULT" ] && {
 			# more than one line output?
@@ -84,8 +54,8 @@ _exe() {
 			fi
 			RESULT=" $YELLOW>>$RESET $GREEN$RESULT$RESET"
 		}
-		echo -en $DELETE
-		echo "[$GREEN OK $RESET] $YELLOW>>$RESET $CMD$RESULT"
+		echo -n "$DELETE"
+		printf "%s\n" "[$GREEN OK $RESET] $YELLOW>>$RESET $CMD$RESULT"
 		return 0
 	else
 		# errocode > 0
@@ -98,18 +68,12 @@ _exe() {
 				SPACE=$(printf "%${COUNT}s")
 				RESULT=$(echo -n "$RESULT" | sed "s/^/$SPACE/g")
 				RESULT=${RESULT:$COUNT}
-			else
-				# cmd execution failed? not found, no permission etc. --> remove temporary file name and line number from $RESULT
-				if grep -qP "^$SCRIPT?: line \d+:" <<< "$RESULT"; then
-					RESULT=$(cut -d: -f3- <<< "$RESULT")
-					RESULT=${RESULT:1}
-				fi
 			fi
 			RESULT=" $YELLOW>>$RESET $RED$RESULT$RESET"
 		}
-		echo -en $DELETE
-		echo "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD$RESULT"
-		return $CODE
+		echo -n "$DELETE"
+		printf "%s\n" "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD$RESULT"
+		return "$CODE"
 	fi
 }
 
@@ -127,7 +91,11 @@ else
 	{
 		echo "Executes a command and show result/output in a nice way. Original return code is preserved."
 		echo
-		echo "Usage: $APP <command> <arguments>"
+		echo "Usage: $APP [--color] <command>"
+		echo
+		echo "       --color     force color usage"
+		echo "       <command>   command to execute"
+		echo
 		_line
 
 		echo "Example: $YELLOW$APP echo 'hello world'$RESET"
