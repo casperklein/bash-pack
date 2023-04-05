@@ -8,6 +8,9 @@
 "\e[12~": "top\n"
 "\e[14~": "tmux\n"
 
+# Performs filename matching and completion in a case-insensitive fashion
+set completion-ignore-case on
+
 # Disable echo ^C when hitting ctrl-c
 set echo-control-characters off
 
