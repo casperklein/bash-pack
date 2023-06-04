@@ -23,7 +23,7 @@ else
 	echo 'Error:' ~/.inputrc 'not found.' >&2
 fi
 
-# inputrc
+# bash_completion
 if [ "$(readlink -f ~/.bash_completion)" == "$DIR/bash_completion" ]; then
 	echo 'Removing symlink' ~/.bash_completion "-> $DIR/bash_completion"
 	rm ~/.bash_completion
