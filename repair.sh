@@ -18,7 +18,7 @@ if [ "$(id -u)" == "0" ]; then
 		# start from scratch
 		git init --quiet
 		git remote add origin "$ORIGIN"
-		git fetch origin
+		git fetch --depth=1 origin
 		git remote set-head -a origin
 		git reset --hard origin/master
 		git branch --set-upstream-to=origin/master
