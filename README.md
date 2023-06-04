@@ -1,18 +1,28 @@
 # bash-pack
 
-    DESTINATION=~/bash-pack
+## Install git
 
-## Download
     apt-get update
     apt-get install git
-    git clone https://github.com/casperklein/bash-pack.git $DESTINATION
+
+## Clone repository
+
+    DESTINATION=~/bash-pack
+    git clone --depth=1 https://github.com/casperklein/bash-pack.git $DESTINATION
 
 ## Install packages and setup symlinks
-    $DESTINATION/install.sh
+
+    "$DESTINATION/install.sh"
 
 ## Update
-    $DESTINATION/update.sh
+
+    "$DESTINATION/update.sh"
+
+## Repair
+
+    "$DESTINATION"/repair.sh [--hard]
 
 ## Uninstall
-    $DESTINATION/uninstall.sh # (symlinks only)
-    rm -rf $DESTINATION       # remove complete
+
+    "$DESTINATION/uninstall.sh" # (symlinks only)
+    rm -rf "$DESTINATION"       # remove complete
