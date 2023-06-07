@@ -16,5 +16,5 @@ gc() {
 		local URL="$1"
 	fi
 	DIR=$(basename "$1")
-	git clone --recurse-submodules "$URL" "$DIR" && cd "$DIR"
+	git clone --recurse-submodules --depth=1 "$URL" "$DIR" && cd "$DIR"
 }
