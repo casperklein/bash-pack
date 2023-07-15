@@ -12,7 +12,7 @@ _installLatest() {
 	shift
 	version=$(dpkg-query -f='${Version}' --show "$app" 2>/dev/null || echo -n "0")
 	arch=$(dpkg --print-architecture)
-	target=$(echo "$SCRIPTS/$app/$app"_*_"$arch.deb" | cut -d_ -f2)
+	target=$(echo "$SCRIPTS/apps/$app/$app"_*_"$arch.deb" | cut -d_ -f2)
 	if dpkg --compare-versions "$version" lt "$target"; then
 		# install package
 		MAKEFLAGS= make -C "$SCRIPTS/apps/$app/" "$@"
