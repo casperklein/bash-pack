@@ -13,6 +13,7 @@ coreutils
 curl
 dnsutils # dig, host, nslookup
 dos2unix
+fake-hwclock
 findutils # find, xargs
 git
 haveged
