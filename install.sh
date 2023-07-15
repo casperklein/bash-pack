@@ -15,7 +15,7 @@ _installLatest() {
 	target=$(echo "$SCRIPTS/$app/$app"_*_"$arch.deb" | cut -d_ -f2)
 	if dpkg --compare-versions "$version" lt "$target"; then
 		# install package
-		MAKEFLAGS= make -C "$SCRIPTS/$app/" "$@"
+		MAKEFLAGS= make -C "$SCRIPTS/apps/$app/" "$@"
 		echo
 	else
 		echo "$app is up-to-date."
