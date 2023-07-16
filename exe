@@ -21,18 +21,24 @@ tty -s || [ "$COLOR" -eq 1 ] && DELETE=$(echo -ne "\r\033[K")	|| DELETE='\n'	# d
 _exe() {
 	# build $CMD with quoted command and arguments
 	CMD=
-	for i in "$@"; do
-			# escape bash operators & build-ins
-			if [[ "$i" =~ ^[0-9\<\>\|\&\*\;]+$|^time$ ]]; then
-				CMD=$CMD" $i"
-			else
-				# since we use ' ourself, we need to escape it
-				#i=$(echo "$i" | sed 's/'\''/'\''\\'\'\''/g') # use printf, to avoid problems with echo options in $i, e.g. -n
-				i=$(printf "%s\n" "$i" | sed 's/'\''/'\''\\'\'\''/g')
-				CMD=$CMD' '\'"$i"\'
-			fi
-	done
-	CMD=${CMD:1}
+
+	if [ $# -gt 1 ]; then
+		for i in "$@"; do
+				# escape bash operators & build-ins
+				if [[ "$i" =~ ^[0-9\<\>\|\&\*\;]+$|^time$ ]]; then
+					CMD+=" $i"
+				else
+					# since we use ' ourself, we need to escape it
+					#i=$(echo "$i" | sed 's/'\''/'\''\\'\'\''/g') # use printf, to avoid problems with echo options in $i, e.g. -n
+					# shellcheck disable=SC1003
+					i=$(printf "%s\n" "$i" | sed 's/'\''/'\''\\'\'\''/g')
+					CMD+=' '\'"$i"\'
+				fi
+		done
+		CMD=${CMD:1}
+	else
+		CMD=$1
+	fi
 
 	# logging
 	if [ -n "${LOG:-}" ]; then
@@ -98,9 +104,10 @@ else
 		echo
 		_line
 
-		echo "Example: $YELLOW$APP echo 'hello world'$RESET"
+		# shellcheck disable=SC2140
+		echo "Example: $YELLOW$APP "\""echo 'hello world'\"$RESET"
 		echo
-		DEMO=$("$APP" echo 'hello world')
+		DEMO=$("$APP" "echo 'hello world'")
 		ERROR=$?
 		echo "Result:"
 		echo
@@ -108,10 +115,11 @@ else
 		echo "Return code: $GREEN$ERROR$RESET"
 		_line
 
-		echo "Example with error: $YELLOW$APP false 'hello world'$RESET"
+		# shellcheck disable=SC2140
+		echo "Example with error: $YELLOW$APP "\""echo 'hello world'; false\"$RESET"
 		echo
 		set +e
-		DEMO=$("$APP" false 'hello world')
+		DEMO=$("$APP" "echo 'hello world'; false")
 		ERROR=$?
 		set -e
 		echo "Result:"
@@ -120,7 +128,17 @@ else
 		echo "Return code: $RED$ERROR$RESET"
 		_line
 
-		echo "Example with escaped pipe: $YELLOW$APP echo foo '|' cat$RESET"
+		echo "Example with pipe: $YELLOW$APP 'echo foo | cat'$RESET"
+		echo
+		DEMO=$("$APP" 'echo foo | cat')
+		ERROR=$?
+		echo "Result:"
+		echo
+		echo "$DEMO"
+		echo "Return code: $GREEN$ERROR$RESET"
+		echo
+
+		echo "(Deprecated) Example with multible arguments and escaped pipe: $YELLOW$APP echo foo '|' cat$RESET"
 		echo
 		DEMO=$("$APP" echo foo '|' cat)
 		ERROR=$?
@@ -129,6 +147,7 @@ else
 		echo "$DEMO"
 		echo "Return code: $GREEN$ERROR$RESET"
 		echo
+
 		exit 1
 	} >&2
 fi
