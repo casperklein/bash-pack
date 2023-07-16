@@ -19,10 +19,11 @@ tty -s || [ "$COLOR" -eq 1 ] && RESET=$(echo -ne "\e[0m")	|| RESET=	# reset fg/b
 tty -s || [ "$COLOR" -eq 1 ] && DELETE=$(echo -ne "\r\033[K")	|| DELETE='\n'	# delete current line
 
 _exe() {
-	# build $CMD with quoted command and arguments
-	CMD=
+	local i CMD CODE ERROR RESULT
 
+	# multiple arguments? try to escape if necessary
 	if [ $# -gt 1 ]; then
+		# Legacy (kept for compatibility)
 		for i in "$@"; do
 				# escape bash operators & build-ins
 				if [[ "$i" =~ ^[0-9\<\>\|\&\*\;]+$|^time$ ]]; then
@@ -62,7 +63,7 @@ _exe() {
 		}
 		echo -n "$DELETE"
 		printf "%s\n" "[$GREEN OK $RESET] $YELLOW>>$RESET $CMD$RESULT"
-		return 0
+		exit 0
 	else
 		# errocode > 0
 		CODE=$?
@@ -79,7 +80,7 @@ _exe() {
 		}
 		echo -n "$DELETE"
 		printf "%s\n" "[$RED ERROR $RESET] $YELLOW>>$RESET $CMD$RESULT"
-		return "$CODE"
+		exit "$CODE"
 	fi
 }
 
@@ -90,64 +91,66 @@ _line() {
 	echo
 }
 
-if [ $# -gt 0 ]; then
-	_exe "$@"
-	exit $?
-else
-	{
-		echo "Executes a command and show result/output in a nice way. Original return code is preserved."
-		echo
-		echo "Usage: $APP [--color] <command>"
-		echo
-		echo "       --color     force color usage"
-		echo "       <command>   command to execute"
-		echo
-		_line
+_usage() {
+	local DEMO ERROR
 
-		# shellcheck disable=SC2140
-		echo "Example: $YELLOW$APP "\""echo 'hello world'\"$RESET"
-		echo
-		DEMO=$("$APP" "echo 'hello world'")
-		ERROR=$?
-		echo "Result:"
-		echo
-		echo "$DEMO"
-		echo "Return code: $GREEN$ERROR$RESET"
-		_line
+	echo "Executes a command and show result/output in a nice way. Original return code is preserved."
+	echo
+	echo "Usage: $APP [--color] <command>"
+	echo
+	echo "       --color     force color usage"
+	echo "       <command>   command to execute"
+	echo
+	_line
 
-		# shellcheck disable=SC2140
-		echo "Example with error: $YELLOW$APP "\""echo 'hello world'; false\"$RESET"
-		echo
-		set +e
-		DEMO=$("$APP" "echo 'hello world'; false")
-		ERROR=$?
-		set -e
-		echo "Result:"
-		echo
-		echo "$DEMO"
-		echo "Return code: $RED$ERROR$RESET"
-		_line
+	# shellcheck disable=SC2140
+	echo "Example: $YELLOW$APP "\""echo 'hello world'\"$RESET"
+	echo
+	DEMO=$("$APP" "echo 'hello world'")
+	ERROR=$?
+	echo "Result:"
+	echo
+	echo "$DEMO"
+	echo "Return code: $GREEN$ERROR$RESET"
+	_line
 
-		echo "Example with pipe: $YELLOW$APP 'echo foo | cat'$RESET"
-		echo
-		DEMO=$("$APP" 'echo foo | cat')
-		ERROR=$?
-		echo "Result:"
-		echo
-		echo "$DEMO"
-		echo "Return code: $GREEN$ERROR$RESET"
-		echo
+	# shellcheck disable=SC2140
+	echo "Example with error: $YELLOW$APP "\""echo 'hello world'; false\"$RESET"
+	echo
+	set +e
+	DEMO=$("$APP" "echo 'hello world'; false")
+	ERROR=$?
+	set -e
+	echo "Result:"
+	echo
+	echo "$DEMO"
+	echo "Return code: $RED$ERROR$RESET"
+	_line
 
-		echo "(Deprecated) Example with multible arguments and escaped pipe: $YELLOW$APP echo foo '|' cat$RESET"
-		echo
-		DEMO=$("$APP" echo foo '|' cat)
-		ERROR=$?
-		echo "Result:"
-		echo
-		echo "$DEMO"
-		echo "Return code: $GREEN$ERROR$RESET"
-		echo
+	echo "Example with pipe: $YELLOW$APP 'echo foo | cat'$RESET"
+	echo
+	DEMO=$("$APP" 'echo foo | cat')
+	ERROR=$?
+	echo "Result:"
+	echo
+	echo "$DEMO"
+	echo "Return code: $GREEN$ERROR$RESET"
+	_line
 
-		exit 1
-	} >&2
-fi
+	echo "(Deprecated) Example with multible arguments and escaped pipe: $YELLOW$APP echo foo '|' cat$RESET"
+	echo
+	DEMO=$("$APP" echo foo '|' cat)
+	ERROR=$?
+	echo "Result:"
+	echo
+	echo "$DEMO"
+	echo "Return code: $GREEN$ERROR$RESET"
+	echo
+
+	exit 1
+} >&2
+
+# no arguments? show usage
+[ $# -lt 1 ] &&	_usage
+
+_exe "$@"
