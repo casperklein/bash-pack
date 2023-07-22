@@ -23,7 +23,7 @@ _exe() {
 
 	# multiple arguments? try to escape if necessary
 	if [ $# -gt 1 ]; then
-		# Legacy (kept for compatibility)
+		# Legacy (multiple arguments; kept for compatibility)
 		for i in "$@"; do
 				# escape bash operators & build-ins
 				if [[ "$i" =~ ^[0-9\<\>\|\&\*\;]+$|^time$ ]]; then
