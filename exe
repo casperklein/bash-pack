@@ -19,7 +19,7 @@ tty -s || [ "$COLOR" -eq 1 ] &&  RESET=$'\e[0m'    || RESET=	    # reset fg/bg c
 tty -s || [ "$COLOR" -eq 1 ] && DELETE=$'\r\033[K' || DELETE=$'\n'  # delete current line
 
 _exe() {
-	local i CMD CODE ERROR RESULT
+	local i CMD CODE COUNT ERROR RESULT SPACE
 
 	# multiple arguments? try to escape if necessary
 	if [ $# -gt 1 ]; then
