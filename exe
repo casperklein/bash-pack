@@ -12,11 +12,11 @@ APP=${0##*/}
 [ "${1:-}" == "--color" ] && COLOR=1 && shift || COLOR=0
 
 # no tty? no colors!
-tty -s || [ "$COLOR" -eq 1 ] &&    RED=$'\e[0;31m' || RED=
-tty -s || [ "$COLOR" -eq 1 ] &&  GREEN=$'\e[0;32m' || GREEN=
+tty -s || [ "$COLOR" -eq 1 ] &&    RED=$'\e[0;31m' ||    RED=
+tty -s || [ "$COLOR" -eq 1 ] &&  GREEN=$'\e[0;32m' ||  GREEN=
 tty -s || [ "$COLOR" -eq 1 ] && YELLOW=$'\e[0;33m' || YELLOW=
-tty -s || [ "$COLOR" -eq 1 ] &&  RESET=$'\e[0m'    || RESET=	    # reset fg/bg color
-tty -s || [ "$COLOR" -eq 1 ] && DELETE=$'\r\033[K' || DELETE=$'\n'  # delete current line
+tty -s || [ "$COLOR" -eq 1 ] &&  RESET=$'\e[0m'    ||  RESET=	    # reset fg/bg color
+tty -s || [ "$COLOR" -eq 1 ] && DELETE=$'\r\e[K'   || DELETE=$'\n'  # delete current line
 
 _exe() {
 	local i CMD CODE COUNT ERROR RESULT SPACE
@@ -56,7 +56,9 @@ _exe() {
 			if [[ "$RESULT" == *$'\n'* ]]; then
 				COUNT=$(( ${#CMD} + 14 ))
 				SPACE=$(printf "%${COUNT}s")
-				RESULT=$(echo -n "$RESULT" | sed "s/^/$SPACE/g")
+				# RESULT=$(printf '%s' "$RESULT" | sed "s/^/$SPACE/g")
+				# shellcheck disable=SC2001
+				RESULT=$(sed "s/^/$SPACE/g" <<<"$RESULT")
 				RESULT=${RESULT:$COUNT}
 			fi
 			RESULT=" $YELLOW>>$RESET $GREEN$RESULT$RESET"
