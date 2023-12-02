@@ -8,7 +8,7 @@
 ## Clone repository
 
     DESTINATION=~/bash-pack
-    git clone --depth=1 https://github.com/casperklein/bash-pack.git $DESTINATION
+    git clone --depth 1 https://github.com/casperklein/bash-pack.git $DESTINATION
 
 ## Install packages and setup symlinks
 
