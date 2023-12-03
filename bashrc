@@ -101,13 +101,32 @@ cat() {
 }
 
 # copy/move with progress
-alias copy='low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive'
-move() {
+# alias copy='low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive'
+copy() {
+	local i
 	local low='nice -n 20 ionice -c3'
-	$low rsync -aHXz --numeric-ids --info=progress2 --no-inc-recursive "$@" &&
+	local options=(
+		--archive          # archive mode is -rlptgoD (no -A,-X,-U,-N,-H)
+		--hard-links       # preserve hard links
+		--xattrs           # preserve extended attribute
+		--numeric-ids      # don't map uid/gid values by user/group name
+		--info=progress2   # outputs statistics based on  the  whole  transfer
+		--no-inc-recursive # disable incremental recursion. calculate which files need to be synchronized at the beginning instead of during the sync.
+	)
+
+	# if arguments contain ':', assume remote file transfer --> use compression
+	for i; do
+		[[ $i == *":"* ]] && options+=(--compress) && break
+	done
+
+	$low rsync "${options[@]}" "$@"
+}
+
+move() {
+	copy "$@" &&
 	# remove last positional argument
 	set -- "${@: 1: $#-1}" &&
-	$low rm "$@"
+	$low trash "$@"
 }
 
 # trash
