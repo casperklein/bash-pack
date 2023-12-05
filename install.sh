@@ -46,6 +46,13 @@ if [ "$ROOT" = true ]; then
 	_installLatest bat install
 	_installLatest duf install
 	_installLatest tmux install copy-conf
+
+	# todo remove in the future; see also uninstall.sh
+	# remove .bash_completion symlink from previous version
+	if [ "$(readlink -f ~/.bash_completion)" == "$DIR/bash_completion" ]; then
+		echo 'Removing symlink' ~/.bash_completion "-> $DIR/bash_completion"
+		rm ~/.bash_completion
+	fi
 else
 	echo "Warning: You are not root. Package installation skipped." >&2
 fi
@@ -74,13 +81,6 @@ echo
 if [ ! -f ~/.inputrc ]; then
 	echo -n 'Creating symlink '
 	ln -sv "$SCRIPTS"/inputrc ~/.inputrc
-	echo
-fi
-
-# bash_completion
-if [ ! -f ~/.bash_completion ]; then
-	echo -n 'Creating symlink '
-	ln -sv "$SCRIPTS"/bash_completion ~/.bash_completion
 	echo
 fi
 

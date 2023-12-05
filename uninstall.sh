@@ -23,6 +23,7 @@ else
 	echo 'Error:' ~/.inputrc 'not found.' >&2
 fi
 
+# todo remove in the future; see also install.sh
 # bash_completion
 if [ "$(readlink -f ~/.bash_completion)" == "$DIR/bash_completion" ]; then
 	echo 'Removing symlink' ~/.bash_completion "-> $DIR/bash_completion"
