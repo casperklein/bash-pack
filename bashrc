@@ -112,15 +112,15 @@ copy() {
 	local i
 	local low='nice -n 20 ionice -c3'
 	local options=(
-		--archive          # archive mode is -rlptgoD (no -A,-X,-U,-N,-H)
-		--hard-links       # preserve hard links
-		--xattrs           # preserve extended attribute
-		--numeric-ids      # don't map uid/gid values by user/group name
-		--info=progress2   # outputs statistics based on  the  whole  transfer
-		--no-inc-recursive # disable incremental recursion. calculate which files need to be synchronized at the beginning instead of during the sync.
+		--archive           # archive mode is -rlptgoD (no -A,-X,-U,-N,-H)
+		--hard-links        # preserve hard links
+		--xattrs            # preserve extended attribute
+		--numeric-ids       # don't map uid/gid values by user/group name
+		--info=progress2    # outputs statistics based on  the  whole  transfer
+		--no-inc-recursive  # disable incremental recursion. calculate which files need to be synchronized at the beginning instead of during the sync.
 	)
 
-	# if arguments contain ':', assume remote file transfer --> use compression
+	# if any argument contains ':', assume remote file transfer --> use compression
 	for i; do
 		[[ $i == *":"* ]] && options+=(--compress) && break
 	done
