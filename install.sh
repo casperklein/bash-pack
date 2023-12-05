@@ -49,8 +49,8 @@ if [ "$ROOT" = true ]; then
 
 	# todo remove in the future; see also uninstall.sh
 	# remove .bash_completion symlink from previous version
-	if [ "$(readlink -f ~/.bash_completion)" == "$DIR/bash_completion" ]; then
-		echo 'Removing symlink' ~/.bash_completion "-> $DIR/bash_completion"
+	if [ "$(readlink -f ~/.bash_completion)" == "$SCRIPTS/bash_completion" ]; then
+		echo 'Removing symlink' ~/.bash_completion "-> $SCRIPTS/bash_completion"
 		rm ~/.bash_completion
 	fi
 else
