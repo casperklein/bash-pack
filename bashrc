@@ -1,3 +1,9 @@
+# shellcheck shell=bash
+# shellcheck disable=SC2031
+# shellcheck disable=SC2120
+# shellcheck disable=SC2139
+# shellcheck disable=SC2142
+
 umask 022
 
 # Path stuff
