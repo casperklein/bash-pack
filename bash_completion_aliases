@@ -479,11 +479,3 @@ _complete_alias() {
 #complete -F _complete_alias myalias1
 #complete -F _complete_alias myalias2
 #complete -F _complete_alias myalias3
-
-complete -F _complete_alias dl
-complete -F _complete_alias dr
-complete -F _complete_alias de
-complete -F _complete_alias db
-
-complete -F _complete_alias tailf
-complete -F _complete_alias docker-compose

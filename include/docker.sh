@@ -33,3 +33,11 @@ dockerignore() {
 		echo "!$FILE"
 	done
 }
+
+# add bash_completion for the following aliases
+complete -F _complete_alias db
+complete -F _complete_alias de
+complete -F _complete_alias di
+complete -F _complete_alias dl
+complete -F _complete_alias docker-compose
+complete -F _complete_alias dr
