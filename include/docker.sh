@@ -1,7 +1,7 @@
 #!/bin/bash
 
 alias db='docker build -t'
-alias dc='drm 2>/dev/null; drmi 2>/dev/null; docker volume prune -f; docker system prune -af; dv; rm -rf ~/.docker/manifests/'
+alias dc='drm 2>/dev/null; drmi 2>/dev/null; docker volume prune --all --force; docker system prune -af; dv; rm -rf ~/.docker/manifests/'
 alias de='docker exec -it'
 alias dev='dr --name dev -h dev -v dev:/root casperklein/dev'
 alias di='docker images'
