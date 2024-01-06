@@ -141,8 +141,9 @@ export TRASHDIR=/trash
 alias et='mkdir -p "$TRASHDIR";  trash-empty zip rar flv mkv nfo sha1 jpg jpeg png gif'	# shred some
 alias ets='mkdir -p "$TRASHDIR"; trash-empty --shred'					# shred all
 alias etn='mkdir -p "$TRASHDIR"; trash-empty'						# shred none
-alias ts='mkdir -p "$TRASHDIR";  du -sh $trash'
-alias tt='mkdir -p "$TRASHDIR";  tree $trash'
+alias ts='mkdir -p "$TRASHDIR";  du -sh "$TRASHDIR"'
+alias tt='mkdir -p "$TRASHDIR";  tree "$TRASHDIR"'
+alias ttt='mkdir -p "$TRASHDIR"; find "$TRASHDIR" -mindepth 2 -maxdepth 2'
 
 # Lower process priority
 alias low='nice -n 20 ionice -c3'
