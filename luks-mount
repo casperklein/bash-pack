@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -ueo pipefail
+shopt -s inherit_errexit
+
+APP=${0##*/}
+
+if [ $# -lt 2 ]; then
+	echo "$APP"
+	echo
+	echo "Syntax: $APP <file> <mount> [<fsck>]"
+	echo
+	exit 1
+fi >&2
+
+CONTAINER=$1
+CONTAINER_BASE=${CONTAINER##*/}
+MOUNT=$2
+FSCK=${3:-}
+
+if tty -s; then
+	cryptsetup open "$CONTAINER" "${CONTAINER_BASE}_crypt"
+else
+	exe "cryptsetup open '$CONTAINER' '${CONTAINER_BASE}_crypt'"
+fi
+
+if [ -n "$FSCK" ]; then
+	echo
+	fsck -y -f "/dev/mapper/${CONTAINER_BASE}_crypt" && true
+	echo
+fi
+
+exe "mount '/dev/mapper/${CONTAINER_BASE}_crypt' '$MOUNT'"
+echo

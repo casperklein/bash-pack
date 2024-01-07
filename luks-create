@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -ueo pipefail
+shopt -s inherit_errexit
+
+APP=${0##*/}
+
+if [ $# -lt 1 ]; then
+	echo "$APP"
+	echo
+	echo "Syntax: $APP <file> <size in MB>"
+	echo
+	exit 1
+fi >&2
+
+CONTAINER=$1
+CONTAINER_BACKUP="$CONTAINER.header-backup"
+SIZE=$2
+
+checkBinarys() {
+        local i
+        for i in "$@"; do
+                hash "$i" 2>/dev/null || {
+                        echo "Binary missing: $i"
+                        echo
+                        exit 1
+                } >&2
+        done
+}
+checkBinarys dd cryptsetup luksformat
+
+if [[ -f "$CONTAINER" || -f "$CONTAINER_BACKUP" ]]; then
+	echo "Error: File '$CONTAINER' or '$CONTAINER_BACKUP' already exists."
+	echo
+	exit 1
+fi >&2
+
+# create empty file
+echo "Creating ${SIZE}M file.."
+dd if=/dev/zero of="$CONTAINER" bs=1M count="$SIZE" status=progress
+echo
+
+# -m    Specify the percentage of the FS blocks reserved for the super-user.
+#       This allows root-owned daemons, such as syslogd(8), to continue to function correctly
+#       after non-privileged  processes are prevented from writing to the file system.
+luksformat -t ext4 "$CONTAINER" -m 0
+
+echo "Creating luks header backup.."
+exe "cryptsetup luksHeaderBackup '$CONTAINER' --header-backup-file '$CONTAINER_BACKUP'"
+echo

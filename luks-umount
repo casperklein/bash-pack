@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -u
+
+APP=${0##*/}
+
+if [ $# -lt 2 ]; then
+	echo "$APP"
+	echo
+	echo "Syntax: $APP <file> <mount>"
+	echo
+	exit 1
+fi >&2
+
+CONTAINER=$1
+CONTAINER_BASE=${CONTAINER##*/}
+MOUNT=$2
+
+echo "Info: Unmounting '$CONTAINER_BASE'"
+exe "umount '$MOUNT'"
+exe "cryptsetup close '${CONTAINER_BASE}_crypt'"
+echo
