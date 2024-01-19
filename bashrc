@@ -96,10 +96,10 @@ alias curl='curl -A "$ua"'
 alias lynx='lynx -useragent "$ua"'
 
 # use syntax highlighting on some conditions
-alias bat='bat --pager=never -p --theme TwoDark'
+alias bat='bat --pager=never --plain --theme TwoDark'
 cat() {
 	if [ $# -eq 1 ] && tty -s && [ -f "$1" ] && [ "$(stat -c%s "$1")" -le 1048576 ]; then
-		bat --pager=never -p --theme TwoDark "$1"
+		bat "$1"
 	else
 		# via pipe
 		command cat "$@"
