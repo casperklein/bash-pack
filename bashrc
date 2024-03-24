@@ -142,8 +142,8 @@ alias et='mkdir -p "$TRASHDIR";  trash-empty zip rar flv mkv nfo sha1 jpg jpeg p
 alias ets='mkdir -p "$TRASHDIR"; trash-empty --shred'					# shred all
 alias etn='mkdir -p "$TRASHDIR"; trash-empty'						# shred none
 alias ts='mkdir -p "$TRASHDIR";  du -sh "$TRASHDIR"'
-alias tt='mkdir -p "$TRASHDIR";  tree "$TRASHDIR"'
-alias ttt='mkdir -p "$TRASHDIR"; find "$TRASHDIR" -mindepth 2 -maxdepth 2'
+alias tt='mkdir -p "$TRASHDIR"; find "$TRASHDIR" -mindepth 2 -maxdepth 2'
+alias ttt='mkdir -p "$TRASHDIR";  tree "$TRASHDIR"'
 
 # Lower process priority
 alias low='nice -n 20 ionice -c3'
