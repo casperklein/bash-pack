@@ -135,6 +135,7 @@ copy() {
 }
 
 move() {
+	# alternative: rsync --remove-source-files
 	copy "$@" &&
 	# remove last positional argument
 	set -- "${@: 1: $#-1}" &&
