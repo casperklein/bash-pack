@@ -5,8 +5,8 @@
 # bashrc alternative: bind '"\e[12~":"top\n"'
 
 # F2 + F4
-"\e[12~": "top\n"
-"\e[14~": "tmux\n"
+"\eOQ": "top\n"
+"\eOS": "tmux\n"
 
 # Performs filename matching and completion in a case-insensitive fashion
 set completion-ignore-case on
