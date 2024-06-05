@@ -42,6 +42,7 @@ alias ip='ip -c=auto'
 # Some shortcuts
 alias apt='aptitude'
 alias at='at -v'
+alias c='check-apt-update'
 alias cata='cat -A' # -vET use ^ and M- notation for non-printable (binary) data; prevent piping binary data :( cat binary > tmp; diff binary tmp
 alias catz='zcat -f'
 alias cls='clear'
