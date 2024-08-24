@@ -1,6 +1,6 @@
 #!/bin/bash
 
-alias db='docker build -t'
+alias db='docker build --check . 2> /dev/null && echo && docker build -t'
 alias dc='docker rmi -f $(docker images -q) 2>/dev/null; docker volume prune --all --force; docker system prune --all --force; dv; trash ~/.docker/manifests/'
 alias de='docker exec -it'
 alias dev='dr --name dev -h dev -v dev:/root casperklein/dev'
