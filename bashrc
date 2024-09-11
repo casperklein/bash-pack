@@ -28,7 +28,6 @@ export LS_OPTIONS='--color=auto' # -N https://www.gnu.org/software/coreutils/quo
 eval "$(dircolors)"
 alias ls='ls $LS_OPTIONS'
 alias ll='LC_COLLATE=C ls $LS_OPTIONS -Ahl' # https://unix.stackexchange.com/a/39853/45235
-#alias checkinstall='checkinstall colormake install'
 alias configure='./configure | ccze -A'
 alias diff='colordiff'
 alias diffv='colordiff --width=$COLUMNS -y'
@@ -36,8 +35,7 @@ alias diffv='colordiff --width=$COLUMNS -y'
 alias grep='grep --color=auto'
 alias highlight='ccze -CA'
 alias ip='ip -c=auto'
-#alias make='low colormake' # https://github.com/pagekite/Colormake/issues/21 --> 'docker push' progress is suppressed
-#alias tail='colortail -q'
+alias watch='watch --color'
 
 # Some shortcuts
 alias apt='aptitude'
