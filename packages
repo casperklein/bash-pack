@@ -28,6 +28,7 @@ mlocate
 moreutils # sponge, vidir
 most
 mtr-tiny
+ncdu
 net-tools
 netcat-openbsd
 openssl
