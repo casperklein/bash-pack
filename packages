@@ -18,6 +18,7 @@ findutils # find, xargs
 git
 haveged
 htop
+inotify-tools
 iputils-ping
 jq
 libarchive-zip-perl # crc32
