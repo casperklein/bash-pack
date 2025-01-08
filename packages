@@ -17,6 +17,7 @@ fake-hwclock
 findutils # find, xargs
 git
 haveged
+hexyl
 htop
 inotify-tools
 iputils-ping
