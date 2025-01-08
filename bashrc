@@ -56,6 +56,7 @@ alias encrypt='low openssl aes-256-cbc -e -salt -md sha256' # when nothing is su
 alias decrypt='low openssl aes-256-cbc -d -salt -md sha256' # when nothing is supplied, openssl defaults are: -e (if -d is not present) -salt -md md5
 alias digl='dig @localhost'
 alias grepl='grep --line-buffered'
+alias hd='hexyl'
 alias hexdump='hexdump -C'
 #alias httpheader='curl -I --compressed' # HEAD Request. Not all headers are included, e.g. the Expire and Last-Modified header
 #alias httpheader='curl -s --compressed -D- -o /dev/null' # File is completely downloaded. Probably not good for large files..
