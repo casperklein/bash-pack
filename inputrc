@@ -8,6 +8,11 @@
 "\eOQ": "top\n"
 "\eOS": "tmux\n"
 
+# For a list of all options, see 'man readline' --> https://www.man7.org/linux/man-pages/man3/readline.3.html
+
+# If set to On, readline displays possible completions using different colors to indicate their file type. The color definitions are taken from the value of the LS_COLORS environment variable.
+set colored-stats on
+
 # Performs filename matching and completion in a case-insensitive fashion
 set completion-ignore-case on
 
