@@ -26,7 +26,6 @@ libarchive-zip-perl # crc32
 lsof
 lynx
 man
-mlocate
 moreutils # sponge, vidir
 most
 mtr-tiny
@@ -34,6 +33,7 @@ ncdu
 net-tools
 netcat-openbsd
 openssl
+plocate
 procps # kill, pgrep, ps, uptime, watch
 psmisc
 pv
