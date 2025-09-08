@@ -1,6 +1,0 @@
-No manual installation needed in Debian 12:
-
-duf
-shellcheck
-
-Remove those sometime in the future.
