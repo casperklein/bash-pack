@@ -5,6 +5,7 @@ alias dc='docker rmi -f $(docker images -q) 2>/dev/null; docker volume prune --a
 alias de='docker exec -it'
 alias dev='dr --name dev -h dev -v dev:/root casperklein/dev'
 alias di='docker images'
+alias dii="docker image ls --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}'"
 alias dl='docker logs -f'
 alias dps='docker ps -a --format "table {{.Names}}\t{{.Command}}\t{{.Ports}}\t{{.Status}}\t{{.Image}}\t{{.Size}}" | grep -P "unhealthy|$"'
 alias dr='docker run --rm -it'
