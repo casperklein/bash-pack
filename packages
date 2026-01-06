@@ -1,5 +1,6 @@
 apt-file
 aptitude
+bash-builtins
 bash-completion
 bc
 binutils
