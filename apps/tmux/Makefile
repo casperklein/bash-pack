@@ -9,9 +9,8 @@ ARCH := $(shell dpkg --print-architecture)
 default: install
 
 install:
-	@echo "Install $(APP) and libevent package.."
-	@dpkg -i $(APP)*$(ARCH).deb
-	@apt-get -y install "$$(apt-cache search libevent-core | awk '{print $$1}')"
+	@echo "Install $(APP).."
+	@apt install -y ./$(APP)*$(ARCH).deb
 	@echo
 
 copy-conf:
