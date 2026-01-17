@@ -204,7 +204,7 @@ _outputFileBuffer() {
 	done < <(tail -n "$BUFFER" "$OUTPUT_FILE")
 }
 
-# shellcheck disable=2317
+# shellcheck disable=2329
 # https://github.com/koalaman/shellcheck/issues/2660
 _cleanUp() {
 	# Enable word-wrapping
